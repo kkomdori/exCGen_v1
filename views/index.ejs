@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="exCGen (exclusive Code Generator) 은 고유의 DNA 서열쌍을 제작해주는 도구입니다. 새로운 서열 제작에 서열 개수, 길이, GC 함량, 포함하지 않아야 할 서열 (exclusion), 포함해야 할 서열 (preset)을 설정값으로 반영할 수 있습니다. 최종 서열은 미리 지정한 서열 (selected) 에 대한 상호작용과 최종 서열 사이의 상호작용 모두 기준치보다 낮은 것들만 선별됩니다. 서로 강하게 상호작용하지 않는 여러가닥의 서열정보는 DNA 를 활용한 정교한 nanodevice 의 제작에 유용하게 쓰일 수 있습니다. exCGen (exclusive Code Generator) is a tool that creates a unique pair of DNA sequences. It can reflect the settings values such as the number and length of sequences, GC content, excluded sequences, and preset sequences for creating a new sequence. The final sequence is selected based on interactions that are lower than the threshold for both the designated sequence (selected) and the final sequence. Multiple strands of sequence information that do not strongly interact with each other can be useful in creating sophisticated nanodevices using DNA.">
+  <meta name="keyword" content="exCGen, exclusive, DNA, primer, oligomer, sequence, ODNs, GC contents, GC gradient, template, preset">
+
+  <%- include('head.html') %>
+    <title>exCGen</title>
+</head>
+
+<body>
+    <%- include('nav2.html') %>
+  <div id="wrap">
+    <p class="text_outer">
+      The exclusive Code Generator (exCGen) is a tool for designing and screening DNA sequences. It identifies pairs of sequences with minimal binding free-energy from a pre-selected and screened set of sequences. The initial random sequence pool can be customized by inputting parameter and preset base information. For further information, please see:
+      <a onclick="openResult('#extend_window_how')" style="color: #215968; font-weight: bold">How it works</a><br /><br />
+      The utilization of DNA as structural building blocks necessitates meticulous consideration of the design of their annealing order, which is governed by the base code inherent in the DNA. The exCGen code-design tool can assist in the generation of novel DNA pairs, thereby enhancing the efficacy of your nano-design. For further information, please see:
+      <a onclick="openResult('#extend_window_when')" style="color: #215968; font-weight: bold">When to use it</a><br />
+    </p>
+
+    <div class="popup_info">
+      <!-- How it works -->
+      <div class="extend_window" id="extend_window_how">
+        <span class="info" onclick="closeResult('#extend_window_how')" style="font-size: 15px; margin-top: 10px">✘</span>
+        <div class="text_container_outer" style="width: 90%; margin-top: 5px"><span class="f1">How it works</span></div><br/>
+        <div class="text_container_outer">
+          <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb1e06V%2Fbtr6NY97iLk%2F8aD0k0wpP89ls7ckCfUdP1%2Fimg.png" style="width: 370px; height: 320px; object-fit: contain; float:left; margin: 0 auto 0 auto" />
+          <p class="text_container_inner">All strands were individually matched to calculate the free energy for specific and non-specific base pairing with each other. To determine the strongest pairing for all possible positions in structural variants*, the exCGen adopted an idea of the sliding algorithm (P.M. Vallone and J.M. Butler, (2004) Biotechniques, doi: 10.2144/04372ST03) and modified it to the matching process of bulged structures. <br/><br/>* The structural variants are tested up to 3 bases in length for bulges and up to 7 bases in length for hairpins in exCGen.</p>
+        </div>
+        <div class="text_container_outer">
+          <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbhmiZb%2Fbtr6OmW9RbU%2FJeXc82ToqLSpCm38fOEUl0%2Fimg.png" style="width: 370px; height: 320px; object-fit: contain; float:left; margin: 0 auto 0 auto" />
+          <p class="text_container_inner">The level of base pairing was determined using the NN thermodynamics parameters (H.T. Allawi, J.Jr. SantaLucia (1997) biochemistry, DOI: 10.1021/bi962590c). If the non-specific binding free energy of a newly synthesized DNA strand is measured to be the lowest (stable) among all cases, but its value is less than the predetermined threshold (the ratio of non-specific &Delta;G (for self or cross) over specific &Delta;G (for duplex) in same length), the strand will be included in the list of completed sequences.</p>
+        </div>
+      </div>
+
+      <!-- When to use it -->
+      <div class="extend_window" id="extend_window_when">
+        <span class="info" onclick="closeResult('#extend_window_when')" style="font-size: 15px; margin-top: 10px">✘</span>
+        <div class="text_container_outer" style="width: 90%; margin-top: 5px"><span class="f1">When to use it</span></div><br/>
+        <div class="text_container_outer">
+          <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcE4oUt%2Fbtr6ZzW0Cap%2FsUfh7rZx3D3bPsK3Yb8vI0%2Fimg.png" style="width: 370px; height: 330px; object-fit: contain; float:left; margin: 0 auto 20px auto " />
+          <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FUxZU9%2Fbtr64lo9ICr%2F2IypwV4FMDPZ5hdKMBBy91%2Fimg.png" style="width: 370px; height: 330px; object-fit: contain; float: left; margin: 0 auto 20px auto" /> 
+        </div>
+      </div>
+    </div>
+
+    <%- include('exCGen.html') %> <%- include('footer.html') %>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,69 @@
+<div class="nav_outer">
+<div class="jumbotron jumbotron-fluid" style="
+    height: 110px;
+    padding: 12px 0;
+    margin-bottom: 0px;
+    background-color: rgba(255, 255, 255, 0);
+  ">
+<div class="nav_inner1">
+    <div style="width: 84px; height: 84px; float: left">
+      <a href="/"><img src="/public/bipyramid_medium.png" style="width: 100%; height: 100%; object-fit: cover" /></a>
+    </div>
+    <h3 class="headline" style="
+        padding: 14px 0 0 0;
+        font-family: 'Courier Prime', monospace;
+        font-weight: bold;
+        margin: 0;
+      ">
+      exCGen
+    </h3>
+    <h6>
+      <p class="" style="display: inline">
+        exclusive Code Generator
+      </p>
+    </h6>
+
+    <span class="sr-only">(current)</span>
+  </div>
+
+</div>
+</div>
+
+<div class="jumbotron jumbotron-fluid" style="
+    padding: 0 0;
+    margin-bottom: 0px;
+    background-color: rgba(255, 255, 255, 0);
+    border-bottom: solid #215968;
+    border-width: 2px;
+  ">
+  <nav class="nav_outer">
+    <div class="nav_inner2">
+      <button id="/" type="button" class="btn navBT active" onclick="location.href='/'">
+        exCGen
+      </button>
+
+      <a href="#">|</a>
+
+      <button id="/tools" type="button" class="btn navBT" onclick="location.href='/tools'">
+        Text_editor
+      </button>
+    </div>
+  </nav>
+</div>
+
+<script>
+  //tab 형식 button의 눌림효과 설정
+  var link = document.location.href; //현재 페이지 주소를 얻음
+  var pos = link.indexOf("/", link.indexOf("/") + 2);
+  //'http://bipyramid.bio/' 에서 'http://' 이후에 나타나는 '/'의 위치를 반환, 이 경우는 21
+  var get_link = link.substring(pos); //'/'를 포함한 이후의 문자열 획득
+
+  var btns = document.querySelectorAll(".btn");
+  btns.forEach(function (btn, i) {
+    if (get_link == btn.id) {
+      btn.classList.add("active");
+    } else {
+      btn.classList.remove("active");
+    }
+  });
+</script>

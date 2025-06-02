@@ -1,0 +1,581 @@
+.grid {
+  display: grid;
+  grid-template-rows: 20px 20px;
+  grid-template-columns: 110px auto 80px;
+  margin: 13px 0;
+  align-items: center;
+  /* justify-items: stretch; */
+}
+.grid-wide {
+  display: grid;
+  grid-template-rows: 20px 20px;
+  grid-template-columns: 40px auto 20px;
+  margin: 20px 0;
+  align-items: center;
+}
+.grid_sub1-1 {
+  grid-row: 1/2;
+  grid-column: 1/2;
+}
+.grid_sub1-2 {
+  grid-row: 1/2;
+  grid-column: 2/3;
+}
+.grid_sub1-3 {
+  grid-row: 1/2;
+  grid-column: 3/4;
+}
+.grid_sub2-1 {
+  grid-row: 2/3;
+  grid-column: 1/2;
+}
+.grid_sub2-2 {
+  grid-row: 2/3;
+  grid-column: 2/3;
+}
+.grid_sub2-3 {
+  grid-row: 2/3;
+  grid-column: 3/4;
+}
+
+body {
+  margin: 0px auto;
+  /* width: 50%; */
+  font-family: "KoPubWorldDotum";
+}
+.f1{
+  font-family: 'Courier New', Courier, monospace;
+  color: #215968;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.slideGroup {
+  background: #ffffff; /* 슬라이더 핸들 색상 */
+  margin: 5px 5px;
+  border-radius: 5px;
+  height: auto;
+  padding: 20px 10px;
+}
+
+.slidecontainer {
+  width: 100%;
+  margin-bottom: 7px;
+}
+.slider {
+  -webkit-appearance: none; /* 기본 CSS 스타일을 적용하지 않기 위해서 */
+  width: 100%; /* 슬라이더 길이 */
+  height: 5px; /* 슬라이더 두께 */
+  border-radius: 5px; /* 슬라이더 모서리를 약간 둥글게 */
+  background: #ccc; /* 슬라이더 색상 */
+  outline: none; /* 슬라이더 테두리 없이 */
+  float: right;
+  margin-top: 9px;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* 기본 CSS 스타일을 적용하지 않기 위해서 */
+  appearance: none; /* 기본 CSS 스타일을 적용하지 않기 위해서 */
+  width: 12px; /* 슬라이더 핸들 길이 */
+  height: 12px; /* 슬라이더 핸들 높이 */
+  border-radius: 50%; /* 핸들 모양을 원모양으로 만들기 위함 */
+  border: solid;
+  border-color: #215968;
+  background: #ffffff; /* 슬라이더 핸들 색상 */
+  cursor: pointer; /* 슬라이더 핸들에 마우스를 갖다대면 포인터로 변경 */
+}
+
+.multi_slider_container {
+  position: relative;
+  width: 120%;
+  margin-left: -16px;
+}
+
+.multi_slider {
+  position: relative;
+  z-index: 1;
+  height: 5px;
+  margin: 0 15px;
+}
+
+.multi_slider > .track {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 5px;
+  background-color: #ccc;
+}
+
+.multi_slider > .range {
+  position: absolute;
+  z-index: 2;
+  left: 40%;
+  right: 40%;
+  top: 0;
+  bottom: 0;
+  border-radius: 5px;
+  background-color: #215968;
+}
+
+.multi_slider > .thumb {
+  position: absolute;
+  z-index: 3;
+  /* margin-top: 5px; */
+  width: 12px;
+  height: 12px;
+  background-color: #ffffff;
+  border: solid;
+  border-radius: 50%;
+  border-color: #215968;
+}
+
+.multi_slider > .thumb.left {
+  left: 40%;
+  transform: translate(-7px, -4px);
+}
+.multi_slider > .thumb.right {
+  right: 40%;
+  transform: translate(7px, -4px);
+}
+
+.multi-range-slider > input[type="range"] {
+  position: absolute;
+  /* opacity로 가린 것을 이벤트도 비활성화하기 위해 */
+  pointer-events: none;
+  -webkit-appearance: none;
+  z-index: 2;
+  height: 5px;
+  width: 100%;
+  opacity: 0;
+}
+
+.multi-range-slider > input[type="range"]::-webkit-slider-thumb {
+  /* 겹쳐진 두 thumb를 모두 활성화 */
+  pointer-events: all;
+  width: 25px;
+  height: 25px;
+  border-radius: 0;
+  border: 0 none;
+  background-color: red;
+  cursor: pointer;
+  /* appearance를 해야 위의 스타일들을 볼 수 있음 */
+  -webkit-appearance: none;
+}
+
+.output {
+  background-color: #ffffff;
+  border: solid;
+  border-radius: 5px;
+  border-width: 1px;
+  border-color: #ccc;
+  text-align: center;
+  font-size: 14px;
+  margin: 0 0 0 15px;
+  padding: 2px 0 0 0;
+}
+
+.seq_input {
+  width: 98%;
+  border-style: solid;
+  border-radius: 25px;
+  border-width: 2px;
+  border-color: #ccc;
+  margin: 6px 0px 0 0;
+  padding: 2px 8px 0px 8px;
+  font-size: 14px;
+  font-family: 'Courier New', monospace;;
+  font-weight: bold;
+}
+.seq_input_sub {
+  width: 100%;
+  border-radius: 8px;
+  height: 262px;
+  margin: 10px 0 -5px 0;
+  font-family: 'Courier New', monospace;
+}
+.seq_input_sub2 {
+  width: 100%;
+  border-radius: 8px;
+  height: 406px;
+  margin: 10px 0 -5px 0;
+  font-family: 'Courier New', monospace;
+}
+
+/*******************tools tap*********************/
+.tab_container_outer {
+  display: flex;
+  flex-direction: row;
+  width: 800px;
+  margin: 4% auto 0 auto;
+}
+.tab_container {
+  width: 370px;
+  margin-left:30px; 
+  margin-top:0;
+}
+ul.tabs {
+  margin: 0px;
+  padding: 0px;
+  list-style: none;
+}
+ul.tabs li {
+  background: none;
+  color: #222;
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+ul.tabs li.current {
+  background: #ededed;
+  color: #222;
+}
+
+.tab-content {
+  display: none;
+  background: #ededed;
+  padding: 1px 1px 1px 1px; 
+  border-radius: 0;
+  height: 490px;
+}
+
+.tab-content.current {
+  display: inherit;
+}
+
+.opBT {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.btn3, .btn4 {
+  height: 35px;
+  width: auto;
+  text-align: center;
+  float: right;
+  margin: auto 10px;
+  font-size: 15px;
+  font-weight: 600; 
+  padding: 2px 15px 0px 15px;
+  -webkit-transition-duration: 0.2s; /* Safari */
+  transition-duration: 0.2s;
+  box-shadow: none;
+}
+
+.btn3:hover {
+  background-color: #215968;
+  color: wheat;
+}
+
+.btn3-outline {
+  color: #215968;
+  background-color: white;
+  border-color: #215968;
+  border-width: 1px;
+  border-radius: 4px;
+}
+
+.btn4:hover {
+  background-color: brown;
+  color: #f5deb3;
+}
+
+.btn4-outline {
+  color: brown;
+  background-color: white;
+  border-color: brown;
+  border-width: 1px;
+  border-radius: 4px;
+}
+
+#board {
+  padding: 20px 10px;
+
+}
+
+#notification{
+  display:none;
+  position: absolute;
+  z-index: 2;
+  width: 370px;
+  height: 480px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  text-align: center;
+  color: #215968;
+  font-size: 50px;
+  font-weight: bolder;
+  margin-top: -5px;
+  margin-left: -5px;
+  padding: 190px 5px;
+}
+
+#notification.show {
+  display: block;
+}
+
+.text_outer {
+  width: 800px;
+  margin: 4% auto 0 auto;
+  font-size: 15px;
+  padding: 0 0 0 30px;
+  text-align: justify;
+}
+
+.info {
+  color: #b1b1b1;
+  font-weight: bold;
+  font-size: 15px;
+  float: right;
+  margin-right: 15px;
+}
+
+.info2{
+  color: #b1b1b1;
+  font-weight: bold;
+  font-size: 15px;
+  float: right;
+  position: absolute;
+  margin-left: 325px;
+  margin-top: -35px;
+  z-index: 1;
+}
+.info3{
+  color: #b1b1b1;
+  font-weight: bold;
+  font-size: 15px;
+  float: left;
+  position: absolute;
+  margin-left: 0;
+  margin-top: -35px;
+  z-index: 1;
+}
+
+.tip{
+  margin-right: 10px;
+  float: right;
+  position: relative;
+  color: gray;
+  font-family: 'Courier Prime', monospace;
+}
+
+.tip .tooltiptext {
+  top: 0px; right: 0%;
+  visibility: hidden; /* 이벤트가 없으면 툴팁 영역을 숨김 */
+  width: 160px; /* 툴팁 영역의 넓이를 설정 */
+  background-color: whitesmoke;
+  color: black;
+  text-align: left;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 15px;
+  border-radius: 5px;
+  border: solid;
+  border-color: #215968;
+  padding: 10px 10px;
+  position: absolute; /* 절대 위치를 사용 */
+  z-index: 1;
+}
+
+.tip:hover .tooltiptext {
+  visibility: visible; /* hover 이벤트 발생시 영역을 보여줌 */
+}
+
+.result {
+  width: 370px;
+  height: 480px;
+  background-color: #ffffff;
+  border: solid;
+  border-radius: 5px;
+  border-width: 1px;
+  border-color: #ccc;
+  font-family: "Courier New", Courier, monospace;
+  text-align: left;
+  font-size: 14px;
+  overflow: auto;
+  margin-top: 45px;
+  margin-left: 30px;
+  padding: 5px 5px;
+}
+#extend_result{
+  display: none;
+  position: absolute;
+  width: 90%;
+  height: 550px;
+  margin: 3% auto 0 5%;
+  background-color: #ffffff;
+  border: solid;
+  border-radius: 5px;
+  border-width: 1px;
+  border-color: #ccc;
+  font-family: "Courier New", Courier, monospace;
+  text-align: left;
+  font-size: 14px;
+  overflow: auto;
+  padding: 5px 5px;
+  z-index: 2;
+}
+
+.extend_window{
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  border: solid;
+  border-radius: 5px;
+  border-width: 2px;
+  border-color: #215968;
+  text-align: left;
+  font-size: 15px;
+  overflow: none;
+  padding: 5px 5px;
+  z-index: 2;
+}
+#extend_window_how{
+  margin-top:-100px;
+  margin-left:calc(50vw - 450px);
+  width: 900px;
+  height: auto;
+}
+#extend_window_when{
+  margin-left:calc(50vw - 450px);
+  width: 900px;
+  height: auto;
+}
+
+/* .img_div{
+  background-image: url("./public/img/01.jpg");
+  background-position: center;
+  height: 300px;
+  border-radius: 10px;
+  border: 10px solid green;
+} */
+
+
+/* chart%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
+#chart {
+  font-family: "Courier New", Courier, monospace;
+}
+.chart_container_outer {
+  display: flex;
+  flex-direction: row;
+  width: 800px;
+  margin: 50px auto 0 auto;
+}
+.chart_container {
+  /* float: left; */
+  display: flex;
+  width: 370px;
+  margin-left:30px;
+}
+.chart_containerN {
+  width: 24%;
+  /* margin-left:-15px */
+}
+.chart_containerW {
+  width: 80%;
+  margin-left: -10px;
+}
+.chart_containerS {
+  width: 370px;
+  margin-left:30px;
+}
+
+table {
+  border-collapse: collapse;
+}
+.text_container_outer {
+  display: flex;
+  flex-direction: row;
+  width: 800px;
+  margin: 0 auto 0 auto;
+}
+.text_container_inner {
+  padding: 30px 15px;
+  text-align: justify;
+}
+
+@media (max-width: 900px) {
+  .tab_container_outer {
+    display: flex;
+    flex-direction: column;
+    width: 370px;
+    margin-top: 10%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .tab_container {
+    width: 370px;
+    margin-left:0px; 
+    margin-top:0;
+  }
+  .chart_container_outer {
+    display: flex;
+    flex-direction: column;
+    width: 370px;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .chart_container {
+    /* float: left; */
+    display: flex;
+    width: 370px;
+    margin-left:0px;
+  }
+  .chart_containerS {
+    width: 370px;
+    margin-left:0px;
+  }
+  
+  .result {
+    width: 370px;
+    height: 480px;
+    background-color: #ffffff;
+    border: solid;
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: #ccc;
+    font-family: "Courier New", Courier, monospace;
+    text-align: left;
+    font-size: 14px;
+    overflow: auto;
+    margin-top: 45px;
+    margin-left: 0px;
+    padding: 5px 5px;
+  }
+
+  .info2{
+    display:none
+  }
+  .text_outer {
+    width: 370px;
+    height: auto;
+    margin: 5% auto 0 auto;
+    font-size: 15px;
+    padding: 0 0;
+  }
+  #extend_window_how{
+    margin-left: 3%;
+    width: 94%;
+    height: auto;
+  }
+  #extend_window_when{
+    margin-left: 3%;
+    width: 94%;
+    height: auto;
+  }
+  .text_container_outer {
+    display: flex;
+    flex-direction: column;
+    width: 370px;
+    margin: 0 auto 0 auto;
+  }
+  .text_container_inner {
+    padding: 10px 15px;
+    text-align: justify;
+  }
+}

@@ -1,0 +1,490 @@
+body {
+  margin: 0px auto;
+  /* width: 50%; */
+  font-family: "KoPubWorldDotum";
+}
+textarea{
+  font-family: "KoPubWorldDotum";
+}
+input{
+  border-width: 1px;
+  border-color: black;
+  border-radius: 4px;
+  box-shadow: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.outer {
+  width: 80%;
+  max-width: 800px;
+  margin: 4% auto 0 auto;
+  font-size: 15px;
+}
+
+.grid_tools {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    grid-template-columns: auto 150px;
+    margin: 20px auto;
+    align-items: center;
+    gap: 10px 0;
+    /* justify-items: stretch; */
+  }
+  .grid_tools_1-1 {
+    grid-row: 1/2;
+    grid-column: 1/2;
+  }
+  .grid_tools_1-2 {
+    grid-row: 1/2;
+    grid-column: 2/3;
+  }
+  .grid_tools_2-1 {
+    grid-row: 2/3;
+    grid-column: 1/2;
+  }
+  .grid_tools_2-2 {
+    grid-row: 2/3;
+    grid-column: 2/3;
+  }
+  .grid_tools_3-1 {
+    grid-row: 3/4;
+    grid-column: 1/2;
+  }
+  .grid_tools_3-2 {
+    grid-row: 3/4;
+    grid-column: 2/3;
+  }
+  .grid_tools_2-12 {
+    grid-row: 2/3;
+    grid-column: 1/3;
+  }
+  .grid_tools_3-12 {
+    grid-row: 3/4;
+    grid-column: 1/3;
+  }
+ 
+  .grid_filters {
+    display: grid; 
+    grid-template-rows: auto auto;
+    grid-template-columns: 110px 40% auto auto;
+    margin: 0 auto;
+    align-items: center;
+    /* justify-items: stretch; */
+    padding: 5px 2%;
+    gap: 5px 5px;
+  }
+  .grid_filters_1-1 {
+    grid-row: 1/2;
+    grid-column: 1/2;
+  }
+  .grid_filters_1-2 {
+    grid-row: 1/2;
+    grid-column: 2/3;
+  }
+  .grid_filters_1-3 {
+    grid-row: 1/2;
+    grid-column: 3/4;
+  }
+  .grid_filters_1-4 {
+    grid-row: 1/2;
+    grid-column: 4/5;
+  }
+  .grid_filters_2-1 {
+    grid-row: 2/3;
+    grid-column: 1/2;
+  }
+  .grid_filters_2-2 {
+    grid-row: 2/3;
+    grid-column: 2/3;
+  }
+  .grid_filters_2-3 {
+    grid-row: 2/3;
+    grid-column: 3/4;
+  }
+  .grid_filters_2-4 {
+    grid-row: 2/3;
+    grid-column: 4/5;
+  }
+  .grid_filters_12-1{
+    grid-row: 1/3;
+    grid-column: 1/2;
+  }
+  .grid_filters_1-23{
+    grid-row: 1/2;
+    grid-column: 2/4;
+  }
+  .grid_filters_1-24{
+    grid-row: 1/2;
+    grid-column: 2/5;
+  }
+  .grid_filters_2-23{
+    grid-row: 2/3;
+    grid-column: 2/4;
+  }
+  .grid_filters_2-24{
+    grid-row: 2/3;
+    grid-column: 2/5;
+  }
+  .grid_filters_12-24{
+    grid-row: 1/3;
+    grid-column: 2/5;
+  }
+  .grid_filters_12-14{
+    grid-row: 1/3;
+    grid-column: 1/5;
+  }
+  .grid_filters_1-14{
+    grid-row: 1/2;
+    grid-column: 1/5;
+  }
+  .grid_filters_2-14{
+    grid-row: 2/3;
+    grid-column: 1/5;
+  }
+
+.text_box{
+  width: auto;
+  height: 300px;
+  border-style: solid;
+  border-radius: 5px;
+  border-width: 2px;
+  border-color: #ccc;
+  margin: 0 0;
+  padding: 2px 8px 0px 8px;
+  font-size: 14px;
+  font-family: 'Courier New', monospace;;
+  font-weight: bold;
+  overflow: auto;
+  word-wrap: break-word;
+}
+.notification{
+  display:none;
+  position: relative; 
+  z-index: 2;
+  width: auto;
+  height: 300px;
+  background: rgba(0,0,0,.1);
+  border-radius: 5px;
+  text-align: center;
+  color: #215968;
+  font-size: 50px;
+  font-family: 'Courier New', monospace;
+  font-weight: bolder;
+  margin: 0 0;
+  padding: 110px 20px;
+}
+.notification.show {
+  display: block;
+}
+
+.btn1, .btn2, .btn3, .btn4, .btn5 {
+  height: auto;
+  min-height: 30px;
+  text-align: center;
+  float: right;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 2px 15px 0px 15px;
+  -webkit-transition-duration: 0.2s; /* Safari */
+  transition-duration: 0.2s;
+  box-shadow: none;
+}
+
+.btn1:hover {
+  background-color: #215968;
+  color: wheat;
+}
+
+.btn1-outline {
+  color: #215968;
+  background-color: white;
+  border-color: #215968;
+  border-width: 1px;
+  border-radius: 4px;
+}
+
+.btn2:hover {
+  background-color: brown;
+  color: wheat;
+}
+
+.btn2-outline {
+  color: brown;
+  background-color: white;
+  border-color: brown;
+  border-width: 1px;
+  border-radius: 4px;
+}
+
+.btn3:hover {
+  background-color: #4a6821;
+  color: wheat;
+}
+
+.btn3-outline {
+  color: #4a6821;
+  background-color: white;
+  border-color: #4a6821;
+  border-width: 1px;
+  border-radius: 4px;
+}
+
+.btn4:hover {
+  background-color: #213368;
+  color: wheat;
+}
+
+.btn4-outline {
+  color: #213368;
+  background-color: white;
+  border-color: #213368;
+  border-width: 1px;
+  border-radius: 4px;
+}
+
+.btn5:hover {
+  background-color: #472168;
+  color: wheat;
+}
+.btn5-outline {
+  color: #472168;
+  background-color: white;
+  border-color: #472168;
+  border-width: 1px;
+  border-radius: 4px;
+}
+
+.output {
+  background-color: white;
+  height: 28px;
+  border: solid;
+  border-radius: 25px;
+  border-width: 1px;
+  border-color: gray;
+  text-align: center;
+  font-size: 14px;
+  padding: 4px 0 0 0;
+}
+
+.btn_container{
+  display:flex; 
+  flex-direction: row; 
+  text-align:center;
+  justify-content: center;
+}
+.filter_container{
+  width: 100%;
+  margin-bottom: 7px;
+  background-color: whitesmoke;
+  border-radius: 10px;
+}
+
+/* 멀티 슬라이더 관련  /////////////////////////////////////////////////////////*/
+.grid {
+  display: grid;
+  grid-template-rows: 15px 15px;
+  grid-template-columns: 10% 80% 10%;
+  margin: 0 0;
+  align-items: center;
+  /* justify-items: stretch; */
+}
+.grid_sub1-1 {
+  grid-row: 1/2;
+  grid-column: 1/2;
+}
+.grid_sub1-2 {
+  grid-row: 1/2;
+  grid-column: 2/3;
+}
+.grid_sub1-3 {
+  grid-row: 1/2;
+  grid-column: 3/4;
+}
+.grid_sub2-1 {
+  grid-row: 2/3;
+  grid-column: 1/2;
+}
+.grid_sub12-1 {
+  grid-row: 1/3;
+  grid-column: 1/2;
+}
+.grid_sub2-2 {
+  grid-row: 2/3;
+  grid-column: 2/3;
+}
+.grid_sub2-3 {
+  grid-row: 2/3;
+  grid-column: 3/4;
+}
+.grid_sub12-3 {
+  grid-row: 1/3;
+  grid-column: 3/4;
+}
+.grid_sub12-2 {
+  grid-row: 1/3;
+  grid-column: 2/3;
+}
+
+.multi_slider_container {
+  position: relative;
+  width: 100%;
+  margin-left: 0;
+}
+
+.multi_slider {
+  position: relative;
+  z-index: 1;
+  height: 5px;
+  margin: 0 15px;
+}
+
+.multi_slider > .track {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 5px;
+  background-color: #ccc;
+}
+
+.multi_slider > .range {
+  position: absolute;
+  z-index: 2;
+  left: 15%;
+  right: 11%;
+  top: 0;
+  bottom: 0;
+  border-radius: 5px;
+  background-color: #215968;
+}
+
+.multi_slider > .thumb {
+  position: absolute;
+  z-index: 3;
+  /* margin-top: 5px; */
+  width: 12px;
+  height: 12px;
+  background-color: #ffffff;
+  border: solid;
+  border-radius: 50%;
+  border-color: #215968;
+}
+
+.multi_slider > .thumb.left {
+  left: 15%;
+  transform: translate(-7px, -4px);
+}
+.multi_slider > .thumb.right {
+  right: 11%;
+  transform: translate(7px, -4px);
+}
+
+.multi-range-slider > input[type="range"] {
+  position: absolute;
+  /* opacity로 가린 것을 이벤트도 비활성화하기 위해 */
+  left: 0px;
+  pointer-events: none;
+  -webkit-appearance: none;
+  z-index: 2;
+  height: 5px;
+  width: 101%;
+  opacity: 0;
+}
+
+.multi-range-slider > input[type="range"]::-webkit-slider-thumb {
+  /* 겹쳐진 두 thumb를 모두 활성화 */
+  pointer-events: all;
+  width: 25px;
+  height: 25px;
+  border-radius: 0;
+  border: 0 none;
+  background-color: red;
+  cursor: pointer;
+  /* appearance를 해야 위의 스타일들을 볼 수 있음 */
+  -webkit-appearance: none;
+}
+/* 멀티 슬라이더 관련  ///////////////////////////////////////////////////////end*/
+
+input[type='checkbox']{
+  position: relative;
+  top: 2px;
+  width: 15px;
+  height: 15px;
+  border:1.5px solid gray; 
+  border-radius: 25px;
+  background-color:white;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -o-appearance: none;
+  appearance:none;
+  box-shadow: none;
+}
+input[type='checkbox']:checked{
+  background-color:brown;
+  border:1.5px solid brown; 
+}
+.checkbox_label{
+  margin: 0 0 0 30px;
+  color: gray;
+  font-weight: bold;  
+  font-size: 15px;
+}
+
+.tip{
+  margin-right: 10px;
+  float: right;
+  position: relative;
+  color: gray;
+  font-family: 'Courier Prime', monospace;
+  text-align: end;
+}
+
+.tip .tooltiptext {
+  top: 0px; right: 0%;
+  visibility: hidden; /* 이벤트가 없으면 툴팁 영역을 숨김 */
+  width: 350px; /* 툴팁 영역의 넓이를 설정 */
+  background-color: whitesmoke;
+  color: black;
+  text-align: left;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 15px;
+  border-radius: 5px;
+  border: solid;
+  border-color: #215968;
+  padding: 10px 10px;
+  position: absolute; /* 절대 위치를 사용 */
+  z-index: 1;
+}
+
+.tip:hover .tooltiptext {
+  visibility: visible; /* hover 이벤트 발생시 영역을 보여줌 */
+}
+
+@media (max-width: 900px) {
+  .outer {
+    width: auto;
+    height: auto;
+    margin: 7% 5% 0 5%;
+    font-size: 15px;
+    padding: 0 0;
+  }
+  .btn_container{
+    display:inline-block;
+    text-align:center;
+    justify-content: center;
+  }
+  .grid_filters {
+    display: grid; 
+    grid-template-rows: auto auto;
+    grid-template-columns: 90px 40% auto auto;
+    margin: 0 auto;
+    align-items: center;
+    /* justify-items: stretch; */
+    padding: 5px 2%;
+    gap: 5px 5px;
+  }
+}

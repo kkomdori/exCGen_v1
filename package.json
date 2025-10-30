@@ -1,5 +1,5 @@
 {
-  "name": "todo",
+  "name": "exCGen",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -8,7 +8,7 @@
     "start": "node server.js"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "ejs": "^3.1.8",
     "express": "^4.18.2",

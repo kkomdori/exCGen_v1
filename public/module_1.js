@@ -26,14 +26,14 @@ const penaltySelf = 0.43; //adjust it to the cases for hairpin and self-annealin
 
 const globalBurlge = 3;
 const globalHairpinLoop = 7;
-const StepOffset = 2; //burlge 서열 제작으로 인한 길이 편차를 감안한 말단부 비교스텝 축소치
+const StepOffset = 2; // Reduction in the terminal comparison step, considering the length deviation due to bulge sequence creation.
 
 var toggle = "on";
-var targetObj = []; //랜덤생산 서열 저장
+var targetObj = []; // Store randomly generated sequences
 var targetGC = []; //gc_distributor(num_pairs, gc_min, gc_max);
 
-var dG_Obj = []; //gate 통과값 저장
-var passObj = []; //최종 서열 정보 저장
+var dG_Obj = []; // Store gate pass values
+var passObj = []; // Store final sequence information
 
 var count = 0;
 var failed = 0;
@@ -44,19 +44,19 @@ var Gate_dG_selected = 0;
 var Gate_dG_passed = 0;
 
 function main() {
-  //느린속도, but 제어가능; main(){setTimeout(){반복문; setTimesout(){main}}}
-  draw(); //상황창에 반영
+  // Slow speed, but controllable; main(){setTimeout(){loop; setTimeout(){main}}}
+  draw(); // Reflect on the status window
 
   setTimeout(() => {
     if (completion < num_pairs && toggle == "on") {
       // console.log("queue");
       count++;
 
-      targetObj = sequenceMaker(preset_seq, targetGC[completion]); //서열 생산
+      targetObj = sequenceMaker(preset_seq, targetGC[completion]); // Sequence generation
       Object.assign(targetObj, { duplex: cal_dG(targetObj.plus, targetObj.minus).toFixed(2) });
       //{ plus: pStrand_str, minus: complement(pStrand.reverse().join("")), gcr: pStrand_GC };
 
-      //설정값에서 Duplex의 dG를 나누어 각 dG 한계치 받기
+      // Receive each dG threshold by dividing the dG of the Duplex from the set value
       var thresholdOfHair_dG = (thresholdOfHair_dGper * Number(targetObj.duplex)) / 100;
       var thresholdOfCross_dG = (thresholdOfCross_dGper * Number(targetObj.duplex)) / 100;
       var thresholdOfSelected_dG = (thresholdOfSelected_dGper * Number(targetObj.duplex)) / 100;
@@ -68,7 +68,7 @@ function main() {
       } else if ((dG_Obj.cross = Gate_dG_cross(targetObj.plus, targetObj.minus, thresholdOfCross_dG, thresholdOfSelected_dG, completion)) == false) {
         failed++;
       } else {
-        Object.assign(targetObj, dG_Obj); //targetObj 에 dG_Obj 의 속성값 추가
+        Object.assign(targetObj, dG_Obj); // Add properties of dG_Obj to targetObj
         passObj.push(targetObj);
         completion++;
       }
@@ -81,12 +81,10 @@ function main() {
 }
 
 function report(resultObj, selectedObj) {
-  // for (var i = 0; i < completion; i++) {
-  //   console.log(`Completion [${i}]: ` + JSON.stringify(resultObj[i]));
-  // }
+
   if (completion == num_pairs) {
     var now = new Date();
-    document.getElementById("end").innerHTML = now.toLocaleString(); //종료시간 저장
+    document.getElementById("end").innerHTML = now.toLocaleString(); // Store end time
     inputActivaton(false);
   }
 
@@ -97,7 +95,7 @@ function report(resultObj, selectedObj) {
 }
 
 function gc_distributor(pairs_amount, minGC, maxGC) {
-  //fragment 개수만큼 오름차순으로 분류한 gc % 값을 포함한 배열 반환
+  // Returns an array containing GC % values sorted in ascending order by the number of fragments
   var gcD = [];
   var gcGap;
 
@@ -110,7 +108,7 @@ function gc_distributor(pairs_amount, minGC, maxGC) {
 }
 
 function sequenceMaker(preset_str, GC_ratio = 50, tolerance = 2.5) {
-  //제시된 GC ratio와 일치하는 서열 제작. tolerance는 오차값 허용 여부.
+  // Create a sequence that matches the given GC ratio. tolerance determines whether to allow for an error margin.
 
   var pStrand = [];
   var arr = [];
@@ -123,7 +121,7 @@ function sequenceMaker(preset_str, GC_ratio = 50, tolerance = 2.5) {
   const arrS = ["G", "C"];
   const arrW = ["A", "T"];
 
-  //GC contents에 맞춰 basepool 적용
+  // Apply basepool according to GC contents
   if (GC_ratio <= 45) {
     arr = arrATATGC;
   } else if (GC_ratio > 55) {
@@ -132,7 +130,7 @@ function sequenceMaker(preset_str, GC_ratio = 50, tolerance = 2.5) {
     arr = arrATGC;
   }
 
-  //preset 반영
+  // Reflect preset
   var n = 0;
   do {
     for (var i = 0; i < preset_str.length; i++) {
@@ -164,7 +162,7 @@ function sequenceMaker(preset_str, GC_ratio = 50, tolerance = 2.5) {
       }
     }
 
-    //GC 검수 후 통과 서열의 minus 서열 정보를 더하여 return
+    // After GC validation, add the minus sequence information of the passing sequence and return
     var pStrand_str = pStrand.join("");
     var pStrand_GC = (pStrand_str.replace(/[^GC]/gi, "").length * 100) / pStrand_str.length;
     if (pStrand_GC >= GC_ratio - tolerance && pStrand_GC <= GC_ratio + tolerance) {
@@ -176,18 +174,6 @@ function sequenceMaker(preset_str, GC_ratio = 50, tolerance = 2.5) {
   alert("Please check the value of GC and preset bases are in the proper range.");
 }
 
-// 특정 문자 수를 세주는 함수
-// String.prototype.countChar = function (char) {
-//   var count = 0;
-//   var searchChar = char; // 찾으려는 문자
-//   var pos = 0;
-//   var pos = this.indexOf(searchChar);
-//   while (pos !== -1) {
-//     count++;
-//     pos = this.indexOf(searchChar, pos + 1);
-//   }
-//   return count;
-// };
 
 function complement(str) {
   str = str.replace(/A/gi, "1");
@@ -196,9 +182,6 @@ function complement(str) {
   str = str.replace(/C/gi, "1");
   str = str.replace(/G/gi, "C");
   str = str.replace(/1/gi, "G");
-  // str.replace(/찾을 문자열/gi, "변경할 문자열")
-  // g : 전체 모든 문자열을 변경 global
-  // i : 영문 대소문자를 무시, 모두 일치하는 패턴 검색 ignore
 
   return str;
 }
@@ -210,34 +193,33 @@ function reverseString(str) {
 
 
 function Gate_Ex(plusStrand, minusStrand, exceptObj) {
-  //순환문을 이용해 plusStrand와 minusStrand가 각 제외서열과 일치하는 부분이 있는지 조사
-  //일치하는 서열이 발견되면 False 반환 후 function 종료, 모든 exceptional 서열과 일치하는 부분이 없으면 True 반환.
+  // Use a loop to check if plusStrand and minusStrand have parts that match each exclusion sequence
+  // If a matching sequence is found, return False and terminate the function. If no part matches any exceptional sequence, return True.
 
-  //입력된 제외서열이 없으면 True 반환 후 Function 종료
+  // If there is no input exclusion sequence, return True and terminate the function
   if (exceptObj.join("").trim() == "") {
     return true;
   }
   for (var i = 0, len = exceptObj.length; i < len; i++) {
     if (exceptObj[i].seq == "") {
-      //빈 칸일때
       continue;
     } else if (plusStrand.includes(exceptObj[i].seq) == true || minusStrand.includes(exceptObj[i].seq) == true) {
-      return false; //탈락
+      return false; // Reject
     }
   }
   return true;
 }
 
 function hairpinMaker(inputSeq, hairpinLength = 4, startPos = 3, slice = "on") {
-  //헤어핀 형성으로 나뉘는 좌우 가닥을 객체배열로 반환함
-  //slice 옵션으로 제단된 서열 반환
+  // Returns the left and right strands, separated by hairpin formation, as an array of objects
+  // Returns the sequence tailored with the slice option
 
   var hairpinSeq = []; //{left: leftPart, right: rightPart}
   for (var h = 3; h <= hairpinLength; h++) {
-    //hairpin loop 3mer 부터 적용
+    // Apply from hairpin loop 3mer
     for (var i = 0, len = inputSeq.length; i <= len - (h + 2 * startPos); i++) {
       if (slice == "on") {
-        //loop 좌,후 서열을 같은 길이로 재단해서 반환
+        // Returns the sequences to the left and right of the loop, tailored to the same length
         hairpinSeq[hairpinSeq.length] = {
           left: inputSeq.substr(0, i + startPos).slicer(inputSeq.substr(i + startPos + h)),
           right: inputSeq.substr(i + startPos + h).slicer(inputSeq.substr(0, i + startPos)),
@@ -251,18 +233,18 @@ function hairpinMaker(inputSeq, hairpinLength = 4, startPos = 3, slice = "on") {
 }
 
 function burlgeMaker(inputSeq, burlgeLength = 3, startPos = 3) {
-  //입력된 서열에서 burlge 길이만큼 자르고 앞뒤 이어붙임
-  //10mer inputSeq, burlgeLength=1, startPos=3 일 때,
-  //burlgeSeq[1] = inputSeq[0~2] + inputSeq[4~9]; start
-  //burlgeSeq[4] = inputSeq[0~5] + inputSeq[7~9]; end
-  //burlge 3은 burlge 0,1,2의 결과를 포함함.
+  // Cut the input sequence by the bulge length and concatenate the front and back parts
+  // When inputSeq is 10mer, bulgeLength=1, startPos=3,
+  // burlgeSeq[1] = inputSeq[0~2] + inputSeq[4~9]; start
+  // burlgeSeq[4] = inputSeq[0~5] + inputSeq[7~9]; end
+  // bulge 3 includes the results of bulge 0, 1, and 2.
 
   var burlgeSeq = [];
-  burlgeSeq[0] = inputSeq; //첫 서열은 no burlge
+  burlgeSeq[0] = inputSeq; // The first sequence has no bulge
 
   for (var h = 1; h <= burlgeLength; h++) {
     for (var i = 0; i <= inputSeq.length - (h + 2 * startPos); i++) {
-      //burlgeSeq[0]는 no burlge inputSeq
+      // bulgeSeq[0] is the inputSeq with no bulge
       burlgeSeq[burlgeSeq.length] = inputSeq.insertStr(i + startPos, "", h);
     }
   }
@@ -276,17 +258,17 @@ function burlgeMaker(inputSeq, burlgeLength = 3, startPos = 3) {
  * @returns
  */
 String.prototype.insertStr = function (index, char, range = 0) {
-  //문자열에서 특정 index에 문자를 insert 하는 함수; replace 용으로 사용 가능
-  //range=0, insertion; range=1, 기존문자 1개를 char로 replace.
+  // Function to insert a character at a specific index in a string; can be used for replacement
+  // range=0, insertion; range=1, replace one existing character with char.
   return this.substr(0, index) + char + this.substr(index + range);
 };
 
 String.prototype.slicer = function (parallelSeq, step = "off") {
   //sliding algorithm (Peter M. Vallone, BioTechniques, 2004)
 
-  //특정 문자열에 대해 비교 문자열을 받아서 비교차수(step)에 맞춰 제단. 방향은 5'->3'
-  //1. input 서열이 short인지 long인지 결정. 2.sliding 비교 알고리즘의 step에 따른 서열제단
-  //2-1. step <= short 일 때; 2-2. short < step <= long 일 때; 2-3. long < step 일 때
+  // For a specific string, receive a comparison string and tailor it according to the comparison order (step). Direction is 5'->3'
+  // 1. Determine if the input sequence is short or long. 2. Sequence tailoring according to the step of the sliding comparison algorithm
+  // 2-1. when step <= short; 2-2. when short < step <= long; 2-3. when step > long
 
   var short;
   var long;
@@ -313,10 +295,10 @@ String.prototype.slicer = function (parallelSeq, step = "off") {
   switch (c) {
     case 1:
       if (step <= short) {
-        slicedSeq = this.substr(0, step); //기본 step 길이에 맞춰 자르기
+        slicedSeq = this.substr(0, step); // Cut according to the basic step length
       } else if (short < step && step <= long) {
         slicedSeq = this.substr(0, short);
-        //비교 step이 short 길이를 넘은 경우 short 길이에 맞춰 자르기
+        // If the comparison step exceeds the short length, cut according to the short length
       } else {
         //step > long
         slicedSeq = this.substr(step - long, short - (step - long));
@@ -340,19 +322,19 @@ String.prototype.slicer = function (parallelSeq, step = "off") {
 };
 
 function cal_dG(sliceNew, sliceOld) {
-  //동일 길이의 두 서열이 전달되면 알파벳 배열로 바꾸고 pairing을 하여 dG 값을 산출함
+  // If two sequences of the same length are passed, they are converted into an alphabet array and paired to calculate the dG value
 
-  //공백은 예외처리
+  // Handle spaces as exceptions
   if (sliceNew == "" || sliceOld == "") {
     return 0;
   }
 
   var pairingLen = sliceNew.trim().length;
 
-  //splicedSeq를 알파벳 배열로 전환
+  // Convert splicedSeq to an alphabet array
   var spNew = [];
   var spOld = [];
-  var spOld_rev = []; //비교 서열을 3to5로 전환
+  var spOld_rev = []; // Convert the comparison sequence from 3' to 5'
 
   for (var i = 0; i < pairingLen; i++) {
     spNew[i] = sliceNew.substr(i, 1);
@@ -360,7 +342,7 @@ function cal_dG(sliceNew, sliceOld) {
     spOld_rev[pairingLen - (i + 1)] = spOld[i];
   }
 
-  var pairing = []; //match, mismatch 결과 (pair) 저장할 배열
+  var pairing = []; // Array to store match, mismatch results (pair)
   var pairResult = "";
   var pair = "";
 
@@ -385,13 +367,13 @@ function cal_dG(sliceNew, sliceOld) {
     }
   }
 
-  //pairResult 첫 문자와 마지막 문자에 공백 추가, for adjusting nearest neighbor model
+  // Add spaces to the first and last characters of pairResult, for adjusting nearest neighbor model
   pairResult = "_" + pairing.join("") + "_";
 
   var NN = "";
   var dG = 0;
 
-  //pairResult 문자열로부터 왼쪽부터 2자씩 뒤의 1자가 중복되도록 읽어온다.
+  // Read 2 characters from the left of the pairResult string, with a 1-character overlap.
   for (var i = 0; i < pairResult.length; i++) {
     NN = pairResult.substr(i, 2);
 
@@ -457,7 +439,7 @@ function Gate_dG_hair(NewPlusStrand, threshold) {
   var lowest_dG_HairNPlus = 0;
   var hairNPlus = [];
 
-  //hairpin 생성. plus 가닥만 비교. minus 가닥과 결과 동일함.
+  // Hairpin generation. Compare only the plus strand. The result is the same as the minus strand.
   hairNPlus = hairpinMaker(NewPlusStrand, globalHairpinLoop, 3); //default: slice="on"
   // { left: inputSeq.substr(0, i + startPos), right: inputSeq.substr(i + startPos + h) }
 
@@ -471,7 +453,7 @@ function Gate_dG_hair(NewPlusStrand, threshold) {
   }
 
   if (threshold > lowest_dG_HairNPlus) {
-    return false; //기준치보다 안정적으로 hairpin 형성하면 리젝.
+    return false; // Reject if a hairpin is formed more stably than the threshold.
   } else {
     // console.log("Gate_dG_hairpin: pass");
     Gate_dG_hairpin++;
@@ -480,14 +462,6 @@ function Gate_dG_hair(NewPlusStrand, threshold) {
 }
 
 function Gate_dG_cross(NewPlusStrand, NewMinusStrand, threshold, threshold_selected, passedNum = 0) {
-  //전역변수 사용내역
-  // const globalBurlge;
-  // const stepOffset;
-  // var plusStrands = [] //passed sequence
-  // var minusStrands = [] //passed sequence
-  // var Gate_dG_self = 0;
-  // var Gate_dG_selected = 0;
-  // var Gate_dG_passed = 0;
 
   //Self-dimer check======================================
   var lowest_dG_SelfNPlus = 0;
@@ -499,7 +473,7 @@ function Gate_dG_cross(NewPlusStrand, NewMinusStrand, threshold, threshold_selec
   var NPvsSelf = 0;
   var NMvsSelf = 0;
 
-  //burlge 서열 생성
+  // Bulge sequence generation
   var B_newPlus = burlgeMaker(NewPlusStrand, globalBurlge);
   var B_newMinus = burlgeMaker(NewMinusStrand, globalBurlge);
 
@@ -547,9 +521,9 @@ function Gate_dG_cross(NewPlusStrand, NewMinusStrand, threshold, threshold_selec
   var NMvsPass = [];
 
   if (passedNum > 0) {
-    //passedNum > 0 부터 검사 시작, 즉, 최초 라운드는 이전 생성 서열이 없으므로 검사 제외
+    // Start checking from passedNum > 0, i.e., the first round is excluded from the check as there is no previously generated sequence
 
-    //burlge new vs complete
+    //bulge new vs complete
     for (var i = 0; i < passedNum; i++) {
       NPvsPass[i] = { t: i, p: 0, m: 0 };
       NMvsPass[i] = { t: i, p: 0, m: 0 };
@@ -595,7 +569,7 @@ function Gate_dG_cross(NewPlusStrand, NewMinusStrand, threshold, threshold_selec
       }
     }
 
-    //burlge complete vs new
+    //bulge complete vs new
     var B_passedPlus = [];
     var B_passedMinus = [];
 
@@ -663,7 +637,7 @@ function Gate_dG_cross(NewPlusStrand, NewMinusStrand, threshold, threshold_selec
 
 
   if (selected.length > 0) {
-    //burlge new vs selected
+    //bulge new vs selected
     for (var i = 0, len = selected.length; i < len; i++) {
       NPvsSelected[i] = 0;
       NMvsSelected[i] = 0;
@@ -676,7 +650,7 @@ function Gate_dG_cross(NewPlusStrand, NewMinusStrand, threshold, threshold_selec
         }
 
         for (var j = StepOffset; j < stepLength - StepOffset; j++) {
-          //step은 긴 서열을 기준으로
+          // The step is based on the longer sequence
 
           dG_dimerNPlusVsSelected = cal_dG(B_newPlus[k].slicer(selected[i].seq, j), selected[i].seq.slicer(B_newPlus[k], j));
           dG_dimerNMinusVsSelected = cal_dG(B_newMinus[k].slicer(selected[i].seq, j), selected[i].seq.slicer(B_newMinus[k], j));
@@ -699,7 +673,7 @@ function Gate_dG_cross(NewPlusStrand, NewMinusStrand, threshold, threshold_selec
           }
         }
       }
-      //selected 서열이 new 서열보다 짧을 경우 비율 적용해서 threshold 낮춤 
+      // If the selected sequence is shorter than the new sequence, apply a ratio to lower the threshold 
       if (selected[i].seq.length < NewPlusStrand.length){
         localSelThreshold = (threshold_selected * selected[i].seq.length / NewPlusStrand.length)
       }else{
@@ -712,7 +686,7 @@ function Gate_dG_cross(NewPlusStrand, NewMinusStrand, threshold, threshold_selec
       progress1 = progress1 + `[${i}]>`
     }
 
-    //burlge selected vs new
+    //bulge selected vs new
     var B_selected = [];
     for (var i = 0, len = selected.length; i < len; i++) {
       B_selected[i] = burlgeMaker(selected[i].seq, globalBurlge);
@@ -745,7 +719,7 @@ function Gate_dG_cross(NewPlusStrand, NewMinusStrand, threshold, threshold_selec
           }
         }
       }
-      //selected 서열이 new 서열보다 짧을 경우 비율 적용해서 threshold 낮춤 
+      // If the selected sequence is shorter than the new sequence, apply a ratio to lower the threshold 
       if (selected[i].seq.length < NewPlusStrand.length){
         localSelThreshold = (threshold_selected * selected[i].seq.length / NewPlusStrand.length)
       }else{

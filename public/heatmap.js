@@ -23,7 +23,7 @@ THE SOFTWARE.
 ***********************************************************************************/
 
 function heatmapForSelected(pairs, complete, resultObj, selectedObj, threshold) {
-  //heatmap data 초기화******************************
+  //heatmap data initializing******************************
   var seriesArr = [];
 
   for (var i = 0; i < pairs; i++) {
@@ -35,8 +35,7 @@ function heatmapForSelected(pairs, complete, resultObj, selectedObj, threshold) 
       seriesArr[2 * i + 1].data.push({ x: selectedObj[j].id.slice(0, 8), y: "0" });
     }
   }
-  //heatmap data 초기화******************************end
-
+  //heatmap data initializing ended******************************
   for (var i = 0; i < complete; i++) {
     for (var j = 0, len = selectedObj.length; j < len; j++) {
       var ratio_len = selectedObj[j].seq.length / resultObj[i].plus.length
@@ -49,7 +48,6 @@ function heatmapForSelected(pairs, complete, resultObj, selectedObj, threshold) 
       }
     }
   }
-  // console.log("selected " + JSON.stringify(seriesArr));
 
   var options = {
     series: seriesArr, // data 붙여넣기
@@ -322,7 +320,7 @@ function heatmapForHairpin(pairs, complete, resultObj, threshold) {
 }
 
 function heatmapForCrossPairs(pairs, complete, resultObj, threshold) {
-  //heatmap data 초기화******************************
+  //heatmap data initializing******************************
   var seriesArr = [];
 
   for (var i = 0; i < pairs; i++) {
@@ -336,7 +334,7 @@ function heatmapForCrossPairs(pairs, complete, resultObj, threshold) {
       seriesArr[2 * i + 1].data.push({ x: j + "-", y: "0" });
     }
   }
-  //heatmap data 초기화******************************end
+  //heatmap data initializing ended******************************
 
   for (var i = 0; i < complete; i++) {
     seriesArr[2 * i].data[2 * i].y = (resultObj[i].cross.NPvsSelf / resultObj[i].duplex).toFixed(2);

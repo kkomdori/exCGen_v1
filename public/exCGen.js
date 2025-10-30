@@ -5,11 +5,11 @@
  * @copyright 2023. E.K.Jang. All rights reserved.
  * ------------------------------------------------------*/
 
-var length = 20; //생성을 원하는 서열의 길이
-var num_pairs = 5; //생성을 원하는 서열의 가지수
+var length = 20; //Length of sequences you want to generate
+var num_pairs = 5; //Pairs of sequences
 var preset_seq = "";
-var gc_min = 40;
-var gc_max = 60;
+var gc_min = 40; //default GC contents range
+var gc_max = 60; //default GC contents range
 
 var thresholdOfHair_dGper = 10;
 var thresholdOfCross_dGper = 25;
@@ -40,17 +40,15 @@ const slider_length = document.getElementById("length");
 const output_length = document.getElementById("val_length");
 output_length.innerHTML = slider_length.value;
 
-//최대 최소 인디케이터 표시
 const minLength = document.getElementById("min_length");
 const maxLength = document.getElementById("max_length");
 minLength.innerHTML = parseInt(slider_length.min);
 maxLength.innerHTML = parseInt(slider_length.max);
 
+//event on silider input
 slider_length.oninput = function () {
-  //이벤트; silider 변경시
   output_length.innerHTML = this.value;
   length = this.value;
-  // presetSeq = preset_seq;
 };
 
 //preset bases>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -119,10 +117,10 @@ const setLeftValue = () => {
   const _this = inputLeft;
   const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
 
-  // 교차되지 않게, 1을 빼준 건 완전히 겹치기보다는 어느 정도 간격을 남겨두기 위해.
+  // To prevent the handles from crossing, subtract 1 to leave some space rather than letting them overlap completely.
   _this.value = Math.min(parseInt(_this.value), parseInt(inputRight.value) - 1);
 
-  // input, thumb 같이 움직이도록
+  // To move input and thumb at the same time
   const percent = ((_this.value - min) / (max - min)) * 100;
   thumbLeft.style.left = percent + "%";
   range.style.left = percent + "%";
@@ -135,10 +133,8 @@ const setRightValue = () => {
   const _this = inputRight;
   const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
 
-  // 교차되지 않게, 1을 더해준 건 완전히 겹치기보다는 어느 정도 간격을 남겨두기 위해.
   _this.value = Math.max(parseInt(_this.value), parseInt(inputLeft.value) + 1);
 
-  // input, thumb 같이 움직이도록
   const percent = ((_this.value - min) / (max - min)) * 100;
   thumbRight.style.right = 100 - percent + "%";
   range.style.right = 100 - percent + "%";
@@ -215,11 +211,6 @@ document.getElementById("continue").addEventListener("click", function (event) {
   inputActivaton(true);
 });
 
-//문제점. 기존 그래프가 존재할 때 변경 조건으로 다시 run 하면 그래프 갱신 안됨
-// continue 하면 갱신됨.  
-
-//현황판$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-//표 이용해서 구구단 그리기; th = 헤더, tr = 행, td = 열
 
 function init() {
   //초기조건 받기
@@ -346,10 +337,10 @@ function drawTable(completeObj, selectedObj){
     }
   }
 
-  $("#table1>tr").remove()//기존에 그려진 표태그 지우기 
-  $("#table2>tr").remove()//기존에 그려진 표태그 지우기 
-  $("#table3>tr").remove()//기존에 그려진 표태그 지우기 
-  $("#table4>tr").remove()//기존에 그려진 표태그 지우기 
+  $("#table1>tr").remove()// Remove previous table tag 
+  $("#table2>tr").remove()
+  $("#table3>tr").remove() 
+  $("#table4>tr").remove() 
 
   var table1 = document.getElementById("table1");
   var table2 = document.getElementById("table2");
@@ -387,10 +378,11 @@ function drawTable(completeObj, selectedObj){
   }
 }
 
-//avoid와 selected 서열을 받아서 편집 후 object 반환
+// Return object after edit avoid and selected sequence
 function fastaToObj(string) {
-  //전역변수
-  //thresholdOfCross_dGper 
+  /*global var
+  thresholdOfCross_dGper 
+  */
 
   if (string == ""){
     return (resultObj = []);
@@ -400,15 +392,15 @@ function fastaToObj(string) {
   var seqArr = [];
   var resultObj = [];
 
-  // const regex = />.*?\n|([ATGCatgc\n]+)/gim; // >~\n 사이값, ATGC\n으로 이루어진 문자열 추출
-  const regexA = />.*?\n/gim; // '.*?' 사이값 추출
-  const regexB = /([ATGCatgc]+)/gim; // ([ATGCatgc]+) ATGCatgc 조합으로 이루어진 연속 문자열 추출
+  // const regex = />.*?\n|([ATGCatgc\n]+)/gim; // Extracts the string between > and newline, and strings composed of ATGC characters.
+  const regexA = />.*?\n/gim; // Extracts the string between > and the newline character.
+  const regexB = /([ATGCatgc]+)/gim; // Extracts a continuous string composed of ATGCatgc characters.
 
-  idArr = string.match(regexA); //regex 해당 문자열을 모아서 배열로 반환
+  idArr = string.match(regexA);
   string = string.replace(regexA, "^@");
   string = string.replace(/\s/g, "");
   string = string.toUpperCase();
-  seqArr = string.match(regexB); //regex 해당 문자열을 모아서 배열로 반환
+  seqArr = string.match(regexB);
 
   var len = idArr.length;
 
@@ -423,7 +415,6 @@ function fastaToObj(string) {
       var sel_GC = (temp_sel.replace(/[^GC]/gi, "").length * 100) / seqArr[i].length;
       duplex = cal_dG(seqArr[i], complement(reverseString(seqArr[i])))
       resultObj[i] = {id: idArr[i].slice(1,-1), seq: seqArr[i], gcr: sel_GC.toFixed(1), duplex: duplex.toFixed(2)} 
-      // id에서 >문자와 줄바꿈, 공백, 탭 제거
     }
     console.log (resultObj)
     return resultObj;
@@ -475,8 +466,3 @@ function inputActivaton(mode = false) {
   $("#avodingSeq").attr("disabled", mode);
   $("#selectedSeq").attr("disabled", mode);
 }
-//원리 설명
-//응용분야 설명
-//affinity 측정
-//text editor - preset 원리 적용
-//난독화

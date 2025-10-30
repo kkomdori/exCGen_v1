@@ -52,11 +52,11 @@
 </div>
 
 <script>
-  //tab 형식 button의 눌림효과 설정
-  var link = document.location.href; //현재 페이지 주소를 얻음
+  // Set the pressed effect for tab-style buttons
+  var link = document.location.href; // Get the current page address
   var pos = link.indexOf("/", link.indexOf("/") + 2);
-  //'http://bipyramid.bio/' 에서 'http://' 이후에 나타나는 '/'의 위치를 반환, 이 경우는 21
-  var get_link = link.substring(pos); //'/'를 포함한 이후의 문자열 획득
+  // Return the position of '/' that appears after 'http://'
+  var get_link = link.substring(pos); // Get the string after and including '/'
 
   var btns = document.querySelectorAll(".btn");
   btns.forEach(function (btn, i) {

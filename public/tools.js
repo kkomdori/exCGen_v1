@@ -21,7 +21,7 @@ const checkbox = document.getElementById("compare");
 var result_save = "";
 const MutArr = ["A", "T", "G", "C"];
 
-// 움직임이 있을 때, 함수 실행
+// When there is movement, execute the function
 // document.addEventListener("mousemove", operate);
 // document.addEventListener("keypress", operate);
 // document.addEventListener("DOMContentLoaded", operate);
@@ -125,18 +125,18 @@ function operate(mode = "") {
       return;
   }
 
-  //문자수 세기
+  // Count characters
   var outTxt = inTxt_filtered;
   let countStrOut = `Words: ${words_count(outTxt)} | Char.: ${byteCounter(
     outTxt, 0)} | Char. (+ space): ${byteCounter(outTxt, 1)}`;
   outputCount.text(countStrOut);
 
-  //output div 출력, 비교기능 구현
+  // Output to div, implement comparison function
   outputText.innerHTML = "";
   const isCompareOn = checkbox.checked;
   if (isCompareOn == true) {
-    inTxt_filtered = replaceAll(inTxt_filtered, " ", "^");//space를 gap으로 표현
-    inTxt_filtered = replaceAll(inTxt_filtered, "\n", "/n");//space를 gap으로 표현
+    inTxt_filtered = replaceAll(inTxt_filtered, " ", "^");// Represent space as a gap
+    inTxt_filtered = replaceAll(inTxt_filtered, "\n", "/n");// Represent space as a gap
     var highlighted = dnaAlignment(inTxt, inTxt_filtered);
     outputText.innerHTML = highlighted;
   } else {
@@ -149,9 +149,9 @@ function operate(mode = "") {
 
 function words_count(text) {
   var wordCount = 0;
-  let arr = text.trim().split(/\s+/); // split() 를 이용하여 띄어쓰기 단위로 나눠서 array로 만든다.
+  let arr = text.trim().split(/\s+/); // Use split() to divide by spaces and create an array.
 
-  // array의 모든 요소에 대해 단어인지 검사한다
+  // Check if every element of the array is a word
   for (let i = 0; i < arr.length; i++) {
     if (isWord(arr[i])) {
       wordCount++;
@@ -163,10 +163,10 @@ function words_count(text) {
 function isWord(str) {
   let alphaNumericFound = false;
 
-  // 단어중에서 알파벳, 숫자가 하나라도 발견되면 단어로 인식할 것이다.
+  // If at least one alphabet or number is found in a word, it will be recognized as a word.
   for (let i = 0; i < str.length; i++) {
-    // 이들을 연속하여 써주면 or 로 인식하여 "숫자이거나, 알파벳이거나, 한글이거나" 라는 의미로 해석된다.
-    // .test() 는 괄호속 인자가 정규식을 만족하는지 검사하여 true or false 값을 반환한다.
+    // Writing them consecutively is interpreted as "is a number, or an alphabet, or Korean"
+    // .test() checks if the argument in parentheses satisfies the regular expression and returns true or false.
     if (/[0-9a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]/.test(str[i])) {
       alphaNumericFound = true;
       return alphaNumericFound;
@@ -175,24 +175,19 @@ function isWord(str) {
   return alphaNumericFound;
 }
 
-//공백포함 : 한글, 한자, 중국어, 일본어는 2글자로, 나머지 언어와 특수문자, 공백은 1글자로 취급합니다.
-//공백미포함 : 공백과 줄바꿈을 제외합니다.
+// With spaces: Korean, Chinese characters, Chinese, and Japanese are treated as 2 characters, while other languages, special characters, and spaces are treated as 1 character.
+// Without spaces: Excludes spaces and line breaks.
 function byteCounter(text, blank = 0) {
-  // blank === 0 -> 공백 미포함  ,  blank !== 1 -> 공백 포함
+  // blank === 0 -> without spaces, blank !== 0 -> with spaces
   let byte = 0;
-  // byte 를 0으로 두고, 한글자씩 체크하면서 한자 한문 한글이면 2를 올려주고, 그 외는 1을 올려주겠습니다.
+  // Set byte to 0, and for each character, add 2 if it's Korean/Chinese/Japanese, otherwise add 1.
   if (blank == 0) {
-    // 공백 미포함일 때는, 미리 줄바꿈과 공백을 빈칸으로 처리합니다.
+    // When not including spaces, replace line breaks and spaces with empty strings beforehand.
     text = text.replace(/\s+/g, "");
   }
 
   for (let i = 0; i < text.length; i++) {
-    // 정규식.test() 함수는 인수가 정규식을 만족하는지 판단하여 true or false 값을 반환합니다.
-    // 한글표현 정규식 : ㄱ-ㅎㅏ-ㅣ가-힣
-    // 한자표현 정규식 : 一-龥
-    // 일본어표현 정규식 : ぁ-ゔァ-ヴー々〆〤
-    // 이 모든것을 /[]/ 안에 포함시켜서 연달아 써주면 "or" 처리됩니다.
-    // 한, 중, 일 언어라면, byte를 2 더해주고, 아니라면 1을 더해주고, 최종적으로 byte를 return 합니다.
+    // If it's a Korean, Chinese, or Japanese language character, add 2 to byte, otherwise add 1, and finally return byte.
     if (/[ㄱ-ㅎㅏ-ㅣ가-힣一-龥ぁ-ゔァ-ヴー々〆〤]/.test(text[i])) {
       byte = byte + 2;
     } else {
@@ -510,7 +505,6 @@ function dnaAlignment(id_seq1, id_seq2) {
     }
   }
 
-  // Display the aligned sequences
   // Display the aligned sequences with mismatches and gaps highlighted
   let alignedSeq1Highlighted = "";
   let alignedSeq2Highlighted = "";

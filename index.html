@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="exCGen (exclusive Code Generator) 은 고유의 DNA 서열쌍을 제작해주는 도구입니다. 새로운 서열 제작에 서열 개수, 길이, GC 함량, 포함하지 않아야 할 서열 (exclusion), 포함해야 할 서열 (preset)을 설정값으로 반영할 수 있습니다. 최종 서열은 미리 지정한 서열 (selected) 에 대한 상호작용과 최종 서열 사이의 상호작용 모두 기준치보다 낮은 것들만 선별됩니다. 서로 강하게 상호작용하지 않는 여러가닥의 서열정보는 DNA 를 활용한 정교한 nanodevice 의 제작에 유용하게 쓰일 수 있습니다. exCGen (exclusive Code Generator) is a tool that creates a unique pair of DNA sequences. It can reflect the settings values such as the number and length of sequences, GC content, excluded sequences, and preset sequences for creating a new sequence. The final sequence is selected based on interactions that are lower than the threshold for both the designated sequence (selected) and the final sequence. Multiple strands of sequence information that do not strongly interact with each other can be useful in creating sophisticated nanodevices using DNA.">
+  <meta name="keyword" content="exCGen, exclusive, DNA, primer, oligomer, sequence, ODNs, GC contents, GC gradient, template, preset">
+
+  <!-- Bootstrap CSS -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+  integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+  crossorigin="anonymous"
+/>
+
+<!--jquery   -->
+<script
+  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+  integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+  crossorigin="anonymous"
+></script>
+
+<!-- 구글폰트 -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap"
+  rel="stylesheet"
+/>
+
+<!-- kopub 돋움 -->
+<link
+  href="https://webfontworld.github.io/kopus/KoPubWorldDotum.css"
+  rel="stylesheet"
+/>
+
+<!-- main CSS -->
+<link rel="stylesheet" href="public/main.css" />
+
+    <title>exCGen</title>
+</head>
+
+<body>
+    <div class="nav_outer">
+<div class="jumbotron jumbotron-fluid" style="
+    height: 110px;
+    padding: 12px 0;
+    margin-bottom: 0px;
+    background-color: rgba(255, 255, 255, 0);
+  ">
+<div class="nav_inner1">
+    <div style="width: 84px; height: 84px; float: left">
+      <a href="index.html"><img src="public/bipyramid_medium.png" style="width: 100%; height: 100%; object-fit: cover" /></a>
+    </div>
+    <h3 class="headline" style="
+        padding: 14px 0 0 0;
+        font-family: 'Courier Prime', monospace;
+        font-weight: bold;
+        margin: 0;
+      ">
+      exCGen
+    </h3>
+    <h6>
+      <p class="" style="display: inline">
+        exclusive Code Generator
+      </p>
+    </h6>
+
+    <span class="sr-only">(current)</span>
+  </div>
+
+</div>
+</div>
+
+<div class="jumbotron jumbotron-fluid" style="
+    padding: 0 0;
+    margin-bottom: 0px;
+    background-color: rgba(255, 255, 255, 0);
+    border-bottom: solid #215968;
+    border-width: 2px;
+  ">
+  <nav class="nav_outer">
+    <div class="nav_inner2">
+      <button id="/" type="button" class="btn navBT" onclick="location.href='index.html'">
+        exCGen
+      </button>
+
+      <a href="#">|</a>
+
+      <button id="/tools" type="button" class="btn navBT" onclick="location.href='tools.html'">
+        Text_editor
+      </button>
+    </div>
+  </nav>
+</div>
+
+<script>
+  // Set the pressed effect for tab-style buttons
+  var pathName = window.location.pathname; // Get the path of the current page, e.g., /index.html
+  var btns = document.querySelectorAll(".btn.navBT");
+
+  btns.forEach(function(btn) {
+    var btnId = btn.id; // e.g., "/" or "/tools"
+    
+    // Default to inactive
+    btn.classList.remove("active");
+
+    // Logic for 'exCGen' button
+    if (btnId === "/" && (pathName.endsWith("/index.html") || pathName.endsWith("/"))) {
+      btn.classList.add("active");
+    } 
+    // Logic for 'Text_editor' button
+    else if (btnId === "/tools" && pathName.includes("tools.html")) {
+      btn.classList.add("active");
+    }
+  });
+</script>
+  <div id="wrap">
+    <p class="text_outer">
+      The exclusive Code Generator (exCGen) is a tool for designing and screening DNA sequences. It identifies pairs of sequences with minimal binding free-energy from a pre-selected and screened set of sequences. The initial random sequence pool can be customized by inputting parameter and preset base information. For further information, please see:
+      <a onclick="openResult('#extend_window_how')" style="color: #215968; font-weight: bold">How it works</a><br /><br />
+      The utilization of DNA as structural building blocks necessitates meticulous consideration of the design of their annealing order, which is governed by the base code inherent in the DNA. The exCGen code-design tool can assist in the generation of novel DNA pairs, thereby enhancing the efficacy of your nano-design. For further information, please see:
+      <a onclick="openResult('#extend_window_when')" style="color: #215968; font-weight: bold">When to use it</a><br />
+    </p>
+
+    <div class="popup_info">
+      <!-- How it works -->
+      <div class="extend_window" id="extend_window_how">
+        <span class="info" onclick="closeResult('#extend_window_how')" style="font-size: 15px; margin-top: 10px">✘</span>
+        <div class="text_container_outer" style="width: 90%; margin-top: 5px"><span class="f1">How it works</span></div><br/>
+        <div class="text_container_outer">
+          <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb1e06V%2Fbtr6NY97iLk%2F8aD0k0wpP89ls7ckCfUdP1%2Fimg.png" style="width: 370px; height: 320px; object-fit: contain; float:left; margin: 0 auto 0 auto" />
+          <p class="text_container_inner">All strands were individually matched to calculate the free energy for specific and non-specific base pairing with each other. To determine the strongest pairing for all possible positions in structural variants*, the exCGen adopted an idea of the sliding algorithm (P.M. Vallone and J.M. Butler, (2004) Biotechniques, doi: 10.2144/04372ST03) and modified it to the matching process of bulged structures. <br/><br/>* The structural variants are tested up to 3 bases in length for bulges and up to 7 bases in length for hairpins in exCGen.</p>
+        </div>
+        <div class="text_container_outer">
+          <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbhmiZb%2Fbtr6OmW9RbU%2FJeXc82ToqLSpCm38fOEUl0%2Fimg.png" style="width: 370px; height: 320px; object-fit: contain; float:left; margin: 0 auto 0 auto" />
+          <p class="text_container_inner">The level of base pairing was determined using the NN thermodynamics parameters (H.T. Allawi, J.Jr. SantaLucia (1997) biochemistry, DOI: 10.1021/bi962590c). If the non-specific binding free energy of a newly synthesized DNA strand is measured to be the lowest (stable) among all cases, but its value is less than the predetermined threshold (the ratio of non-specific &Delta;G (for self or cross) over specific &Delta;G (for duplex) in same length), the strand will be included in the list of completed sequences.</p>
+        </div>
+      </div>
+
+      <!-- When to use it -->
+      <div class="extend_window" id="extend_window_when">
+        <span class="info" onclick="closeResult('#extend_window_when')" style="font-size: 15px; margin-top: 10px">✘</span>
+        <div class="text_container_outer" style="width: 90%; margin-top: 5px"><span class="f1">When to use it</span></div><br/>
+        <div class="text_container_outer">
+          <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcE4oUt%2Fbtr6ZzW0Cap%2FsUfh7rZx3D3bPsK3Yb8vI0%2Fimg.png" style="width: 370px; height: 330px; object-fit: contain; float:left; margin: 0 auto 20px auto " />
+          <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FUxZU9%2Fbtr64lo9ICr%2F2IypwV4FMDPZ5hdKMBBy91%2Fimg.png" style="width: 370px; height: 330px; object-fit: contain; float: left; margin: 0 auto 20px auto" /> 
+        </div>
+      </div>
+    </div>
+
+    <link rel="stylesheet" href="public/exCGen.css" />
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<!-- LaTeX 수식 스크립트-->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script>
+<!-- LaTeX 수식 스크립트-->
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML"
+  async
+></script>
+<script type="text/javascript" src="public/module_1.js" defer></script>
+<script type="text/javascript" src="public/exCGen.js" defer></script>
+<script type="text/javascript" src="public/heatmap.js"></script>
+
+<!-- extended result -->
+<div id="extend_result">
+  <div
+    class="info"
+    onclick="closeResult('#extend_result')"
+    style="font-size: 25px"
+  >
+    ×
+  </div>
+  <table class="table test">
+    <div style="font-weight: bold">Completed sequences</div>
+    <tr>
+      <th>No.</th>
+      <th>Seq.</th>
+      <th>Length</th>
+      <th>GC(%)</th>
+      <th>duplex_dG</th>
+    </tr>
+    <tbody id="table3"></tbody>
+  </table>
+  <br />
+  <table class="table test">
+    <div style="font-weight: bold">Selected sequences</div>
+    <tr>
+      <th>ID</th>
+      <th>Seq.</th>
+      <th>Length</th>
+      <th>GC(%)</th>
+      <th>duplex_dG</th>
+    </tr>
+    <tbody id="table4"></tbody>
+  </table>
+</div>
+
+<!-- tab 포멧 -->
+<div class="tab_container_outer">
+  <div class="tab_container">
+    <ul class="tabs">
+      <li class="tab-link current" data-tab="tab-1" id="one">Preset 1 ></li>
+      <li class="tab-link" data-tab="tab-2" id="two">2 ></li>
+      <li class="tab-link" data-tab="tab-3" id="three">3 ></li>
+      <li class="tab-link" data-tab="tab-4" id="four">4.</li>
+    </ul>
+
+    <div id="tab-1" class="tab-content current">
+      <!-- parameters, thresholds 설정창 1111111111111111111111111111111111111111111111111 -->
+      <div class="slideGroup" id="parameters">
+        <span style="font-weight: bold"> ◈ Parameters</span>
+
+        <!-- Length -->
+        <div class="grid">
+          <div class="grid_sub2-1">Length <span style="float:right;font-size: 12px; padding: 5px 10px 0px 0px">(mer)</span></div>
+          <div class="grid_sub1-2">
+            <span
+              id="min_length"
+              style="
+                float: left;
+                font-size: 12px;
+                font-weight: bold;
+                color: grey;
+              "
+              >min</span
+            >
+            <span
+              id="max_length"
+              style="
+                float: right;
+                font-size: 12px;
+                font-weight: bold;
+                color: grey;
+              "
+              >max</span
+            >
+          </div>
+          <div class="slidecontainer grid_sub2-2">
+            <input
+              type="range"
+              min="10"
+              max="100"
+              value="20"
+              class="slider"
+              id="length"
+            />
+          </div>
+          <div class="grid_sub2-3 output" id="val_length"></div>
+        </div>
+
+        <!-- Pairs -->
+        <div class="grid">
+          <div class="grid_sub2-1">Pairs</div>
+          <div class="grid_sub1-2">
+            <span
+              id="min_pairs"
+              style="
+                float: left;
+                font-size: 12px;
+                font-weight: bold;
+                color: grey;
+              "
+              >min</span
+            >
+            <span
+              id="max_pairs"
+              style="
+                float: right;
+                font-size: 12px;
+                font-weight: bold;
+                color: grey;
+              "
+              >max</span
+            >
+          </div>
+          <div class="slidecontainer grid_sub2-2">
+            <input
+              type="range"
+              min="2"
+              max="20"
+              value="5"
+              class="slider"
+              id="pairs"
+            />
+          </div>
+          <div class="grid_sub2-3 output" id="val_pairs"></div>
+        </div>
+
+        <!-- GC contents -->
+        <div class="grid">
+          <div class="grid_sub2-1">GC ratio <span style="float:right;font-size: 12px; padding: 5px 10px 5px 0px">(%)</span></div>
+          <div class="grid_sub1-2">
+            <span
+              style="
+                float: left;
+                font-size: 12px;
+                font-weight: bold;
+                color: grey;
+              "
+              >0</span
+            >
+            <span
+              style="
+                float: right;
+                font-size: 12px;
+                font-weight: bold;
+                color: grey;
+              "
+              >100</span
+            >
+          </div>
+          <div class="multi_slider_container grid_sub2-2">
+            <div class="multi-range-slider">
+              <!-- 진짜 슬라이더 -->
+              <input
+                type="range"
+                id="input-left"
+                min="0"
+                max="100"
+                value="40"
+              />
+              <input
+                type="range"
+                id="input-right"
+                min="0"
+                max="100"
+                value="60"
+              />
+
+              <!-- 커스텀 슬라이더 -->
+              <div class="multi_slider">
+                <div class="track"></div>
+                <div class="range"></div>
+                <div class="thumb left"></div>
+                <div class="thumb right"></div>
+              </div>
+            </div>
+          </div>
+          <div class="grid_sub2-3 output" id="val_GCrange"></div>
+        </div>
+      </div>
+
+      <div class="slideGroup" id="thresholds">
+        <span style="font-weight: bold"> ◈ Thresholds</span>
+        <div class="tip">
+          (?)
+          <div class="tooltiptext">Remove sequence candidates that exceed the specified threshold [ΔG_nonspecific / ΔG_specific].</div>
+        </div>
+        <!-- hairpin dG -->
+        <div class="grid">
+          <div class="grid_sub2-1">$\frac{ΔGhairpin}{ΔGpair}$ <span style="float:right;font-size: 12px; margin-top: 3px; padding: 5px 10px 5px 0px">(%)</span></div>
+          <div class="grid_sub1-2">
+            <span
+              id="min_hairpinG"
+              style="
+                float: left;
+                font-size: 12px;
+                font-weight: bold;
+                color: grey;
+              "
+              >min</span
+            >
+            <span
+              id="max_hairpinG"
+              style="
+                float: right;
+                font-size: 12px;
+                font-weight: bold;
+                color: grey;
+              "
+              >max</span
+            >
+          </div>
+          <div class="slidecontainer grid_sub2-2">
+            <input
+              type="range"
+              min="0"
+              max="80"
+              value="8"
+              class="slider"
+              id="hairpinG"
+            />
+          </div>
+          <div class="grid_sub2-3 output" id="val_hairpinG"></div>
+        </div>
+        <!-- cross dG -->
+        <div class="grid">
+          <div class="grid_sub2-1">$\frac{ΔGcross}{ΔGpair}$ <span style="float:right;font-size: 12px; margin-top: 3px; padding: 5px 10px 5px 0px">(%)</span></div>
+          <div class="grid_sub1-2">
+            <span
+              id="min_crossG"
+              style="
+                float: left;
+                font-size: 12px;
+                font-weight: bold;
+                color: grey;
+              "
+              >min</span
+            >
+            <span
+              id="max_crossG"
+              style="
+                float: right;
+                font-size: 12px;
+                font-weight: bold;
+                color: grey;
+              "
+              >max</span
+            >
+          </div>
+          <div class="slidecontainer grid_sub2-2">
+            <input
+              type="range"
+              min="10"
+              max="100"
+              value="25"
+              class="slider"
+              id="crossG"
+            />
+          </div>
+          <div class="grid_sub2-3 output" id="val_crossG"></div>
+        </div>
+        <!-- cross dG -->
+        <div class="grid">
+          <!-- LaTeX 수식 -->
+          <div class="grid_sub2-1">$\frac{ΔGselected}{ΔGpair}$ <span style="float:right; font-size: 12px; margin-top: 3px; padding: 5px 10px 5px 0px">(%)</span></div>
+          <div class="grid_sub1-2">
+            <span
+              id="min_selectedG"
+              style="
+                float: left;
+                font-size: 12px;
+                font-weight: bold;
+                color: grey;
+              "
+              >min</span
+            >
+            <span
+              id="max_selectedG"
+              style="
+                float: right;
+                font-size: 12px;
+                font-weight: bold;
+                color: grey;
+              "
+              >max</span
+            >
+          </div>
+          <div class="slidecontainer grid_sub2-2">
+            <input
+              type="range"
+              min="10"
+              max="100"
+              value="35"
+              class="slider"
+              id="selectedG"
+            />
+          </div>
+          <div class="grid_sub2-3 output" id="val_selectedG"></div>
+        </div>
+      </div>
+    </div>
+    <div id="tab-2" class="tab-content">
+      <!-- preset sequence, exclusive sequence 설정창 2222222222222222222222222222222222222222 -->
+      <div class="slideGroup" id="preset">
+        <span style="font-weight: bold"> ◈ Preset bases </span>
+        <div class="tip">
+          (?)
+          <div class="tooltiptext">
+            A : Adenine<br />
+            C : Cytosine<br />
+            G : Guanine<br />
+            T : Thymine<br />
+            R : G or A<br />
+            Y : C or T<br />
+            S : G or C<br />
+            W : A or T<br />
+            * : A or G<br />　　or C or T
+          </div>
+        </div>
+        <!-- pre-set bases -->
+        <div class="grid-wide" style="margin-top: 15px">
+          <div
+            class="grid_sub2-1"
+            style="
+              float: right;
+              font-size: 12px;
+              font-weight: bold;
+              color: black;
+            "
+          >
+            (+) 5'-
+          </div>
+          <div class="grid_sub2-2">
+            <!-- <input class="seq_input" type="text" id="presetSeq" value="" /> -->
+            <!-- style="resize: none; padding: 8px; margin: 20px" -->
+            <textarea
+              class="seq_input"
+              id="presetSeq"
+              value=""
+              rows="1"
+              name="text"
+              style="resize: none"
+              oninput='this.style.height=""; if (this.scrollHeight > this.clientHeight){
+                  this.style.height = this.scrollHeight + "px";}'
+            ></textarea>
+          </div>
+          <div
+            class="grid_sub2-3"
+            style="
+              float: left;
+              font-size: 12px;
+              font-weight: bold;
+              color: black;
+            "
+          >
+            -3'
+          </div>
+        </div>
+      </div>
+      <div class="slideGroup" style="padding: 20px 10px 10px 10px">
+        <span style="font-weight: bold"> ◈ Exclusion bases </span>
+        <div class="tip">
+          (?)
+          <div class="tooltiptext">
+            Bases that will not be included in the new sequence.
+          </div>
+        </div>
+
+        <textarea
+          class="seq_input seq_input_sub"
+          id="avodingSeq"
+          value=""
+          rows="15"
+          name="text"
+          style="resize: none"
+        ></textarea>
+      </div>
+    </div>
+    <div id="tab-3" class="tab-content">
+      <!-- selected sequence 설정창 3333333333333333333333333333333333333333333333333333333333-->
+      <div class="slideGroup" style="padding: 20px 10px 10px 10px">
+        <span style="font-weight: bold"> ◈ Selected sequences</span>
+        <textarea
+          class="seq_input seq_input_sub2"
+          id="selectedSeq"
+          placeholder=">ID_1_example&#13;&#10;AGTCAGTCAGTCAGTCAGTC&#13;&#10;>ID_2_example&#13;&#10;AAGGTTCCAAGGTTCC&#13;&#10;&#13;&#10;Paste your sequences as in the example above to screen for new sequences that are exclusive from them."
+          rows="30"
+          name="text"
+          style="resize: none"
+        ></textarea>
+      </div>
+    </div>
+    <div id="tab-4" class="tab-content">
+      <!-- selected sequence 설정창 3333333333333333333333333333333333333333333333333333333333-->
+      <div
+        class="slideGroup"
+        id="preset"
+        style="padding: 20px 10px 10px 10px; height: 110px"
+      >
+        <span style="font-weight: bold"> ◈ Operation</span>
+        <div style="display: flex; padding: 10px 0px; justify-content: center">
+          <button class="btn3 btn3-outline" id="run">Run</button>
+          <button class="btn4 btn4-outline opBT" id="stop">Stop</button>
+          <button class="btn3 btn3-outline" id="continue">Continue</button>
+        </div>
+      </div>
+      <div
+        class="slideGroup"
+        id="board"
+        style="padding: 20px 10px 10px 10px; height: 340px"
+      >
+        <span style="font-weight: bold"> ◈ Dashboard</span>
+        <div id="resultBoard">
+          <br />
+          <li>Start : <span id="start"></span></li>
+          <li>End : <span id="end"></span></li>
+          <span style="color: gray">-----------------------------------</span>
+          <div style="float: left">
+            <li>Total</li>
+            <li>Pass (with Hairpin)</li>
+            <li>Pass (with Self-dimer)</li>
+            <li>Pass (with Completed)</li>
+            <li>Pass (with Selected)</li>
+            <li>Completion</li>
+          </div>
+          <div style="float: right; text-align: right; list-style: none">
+            <li id="total"></li>
+            <li id="pass_hairpin"></li>
+            <li id="pass_self-dimer"></li>
+            <li id="pass_passed"></li>
+            <li id="pass_selected"></li>
+            <li id="completion"></li>
+          </div>
+        </div>
+      </div>
+      <span class="info" onclick="info()">About</span>
+    </div>
+  </div>
+  <!-- result table -->
+  <div class="result" id="result">
+    <div class="info3" onclick="copyToClipboard('result')">Copy</div>
+    <div class="info2" onclick="openResult('#extend_result')"><=></div>
+    <div id="notification">✔</div>
+    <table class="table test">
+      <div style="font-weight: bold">Completed sequences</div>
+      <tr>
+        <th>No.</th>
+        <th>Seq.</th>
+        <th>Length</th>
+        <th>GC(%)</th>
+        <th>duplex_dG</th>
+      </tr>
+      <tbody id="table1"></tbody>
+    </table>
+    <br />
+    <table class="table test">
+      <div style="font-weight: bold">Selected sequences</div>
+      <tr>
+        <th>ID</th>
+        <th>Seq.</th>
+        <th>Length</th>
+        <th>GC(%)</th>
+        <th>duplex_dG</th>
+      </tr>
+      <tbody id="table2"></tbody>
+    </table>
+  </div>
+</div>
+<!-- tap end -->
+<!-- chart area -->
+<div class="chart_container_outer">
+  <div class="chart_container">
+    <div class="chart_containerN chart"><div id="chart_hair"></div></div>
+    <div class="chart_containerW chart"><div id="chart_pairs"></div></div>
+  </div>
+  <div class="chart_containerS chart"><div id="chart_select"></div></div>
+</div>
+ <div id="wrapFooter">
+  <footer>
+
+    <p>
+      <span>kkomdori@gmail.com</span><span>  |  </span><br />
+      <span>Copyright 2023. E.K.Jang. All rights reserved.</span><br /><br />
+    <span style = "margin: 0 20px"> DISCLAIMER: The software author offers no warranty for this freely available software and accepts no responsibility for any potential loss or damage resulting from its use for any purpose.<br /></span>
+    </p>
+  </footer>
+</div>
+  </div>
+</body>
+
+</html>

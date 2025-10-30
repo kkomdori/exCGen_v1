@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="Text_editor 는 웹상에서 간편하게 사용할 수 있는 텍스트 편집 도구입니다. DNA 서열 편집에 특화되어 있으나, 일반적인 텍스트 클립보드를 처리할 때에도 유용하게 사용할 수 있습니다. 클립보드를 붙여넣기 하는 것 만으로도 단어수와 문자수를 알 수 있습니다. 띄어쓰기 제거, 라인 제거, 숫자 제거, 문자변환, 문자치환, 특정 길이의 단어 추출, 단어섞기, 문자섞기, 대소문자 변환, 특정 문자나 공백을 반복적으로 삽입하기 등의 기능을 지원하며 결과창에서 변경된 부분을 실시간 추적할 수 있습니다. Text_editor is a text editing tool that can be easily used online. Although specialized in DNA sequence editing, it can also be useful for handling general text clipboards. By simply pasting the clipboard, you can find out the word and character count. It supports functions such as removing spaces, lines, and numbers, converting and replacing characters, extracting words of a certain length, shuffling words and characters, converting case, and repeatedly inserting specific characters or spaces. It also allows you to track changes in real-time in the results window.">
+  <meta name="keyword" content="Text editor, DNA editor, clipboard, replace, insert, extract, remove, shuffle, reverse, complement, reverse complement, word counter">
+
+  <!-- Bootstrap CSS -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+  integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+  crossorigin="anonymous"
+/>
+
+<!-- jquery   -->
+<script
+  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+  integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+  crossorigin="anonymous"
+></script>
+
+<!-- 구글폰트 -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap"
+  rel="stylesheet"
+/>
+
+<!-- kopub 돋움 -->
+<link
+  href="https://webfontworld.github.io/kopus/KoPubWorldDotum.css"
+  rel="stylesheet"
+/>
+
+<!-- main CSS -->
+<link rel="stylesheet" href="public/main.css" />
+
+    <title>exCGen</title>
+    <link rel="stylesheet" href="public/tools.css" />
+    <script type="text/javascript" src="public/tools.js" defer></script>
+</head>
+
+<body>
+  <div class="nav_outer">
+<div class="jumbotron jumbotron-fluid" style="
+    height: 110px;
+    padding: 12px 0;
+    margin-bottom: 0px;
+    background-color: rgba(255, 255, 255, 0);
+  ">
+<div class="nav_inner1">
+    <div style="width: 84px; height: 84px; float: left">
+      <a href="index.html"><img src="public/bipyramid_medium.png" style="width: 100%; height: 100%; object-fit: cover" /></a>
+    </div>
+    <h3 class="headline" style="
+        padding: 14px 0 0 0;
+        font-family: 'Courier Prime', monospace;
+        font-weight: bold;
+        margin: 0;
+      ">
+      exCGen
+    </h3>
+    <h6>
+      <p class="" style="display: inline">
+        exclusive Code Generator
+      </p>
+    </h6>
+
+    <span class="sr-only">(current)</span>
+  </div>
+
+</div>
+</div>
+
+<div class="jumbotron jumbotron-fluid" style="
+    padding: 0 0;
+    margin-bottom: 0px;
+    background-color: rgba(255, 255, 255, 0);
+    border-bottom: solid #215968;
+    border-width: 2px;
+  ">
+  <nav class="nav_outer">
+    <div class="nav_inner2">
+      <button id="/" type="button" class="btn navBT" onclick="location.href='index.html'">
+        exCGen
+      </button>
+
+      <a href="#">|</a>
+
+      <button id="/tools" type="button" class="btn navBT" onclick="location.href='tools.html'">
+        Text_editor
+      </button>
+    </div>
+  </nav>
+</div>
+
+<script>
+  // Set the pressed effect for tab-style buttons
+  var pathName = window.location.pathname; // Get the path of the current page, e.g., /tools.html
+  var btns = document.querySelectorAll(".btn.navBT");
+
+  btns.forEach(function(btn) {
+    var btnId = btn.id; // e.g., "/" or "/tools"
+    
+    // Default to inactive
+    btn.classList.remove("active");
+
+    // Logic for 'exCGen' button
+    if (btnId === "/" && (pathName.endsWith("/index.html") || pathName.endsWith("/"))) {
+      btn.classList.add("active");
+    } 
+    // Logic for 'Text_editor' button
+    else if (btnId === "/tools" && pathName.includes("tools.html")) {
+      btn.classList.add("active");
+    }
+  });
+</script>
+    <div id="wrap">
+      <div class="outer">
+        <div class="grid_tools">
+          <span class="grid_tools_1-1" style="font-weight: bold; font-size: 16px;">
+            ◈ Filter
+          </span>
+          <div class="grid_tools_1-2 tip">
+            (?)
+            <p class="tooltiptext" style="z-index: 3;">When you click on the [Filter button], the text inside the Input area will be edited and the result will be displayed in the Output area.<br/><br/>[Replace] can be used to find all matched words with the target and replace them with 'As', including spaces.<br/><br/>[Insert] is useful for inserting characters periodically, such as when tracking codon units in DNA sequences.<br/><br/>[Extract] can be used to extract data based on target length, while the [Extract(Odd)] and [Extract(Even)] functions extract words positioned at (2N-1)th and (2N)th, respectively. These extract functions are useful for processing exCGen data and merging them into a longer sequence made only of + or - strands.<br/><br/>[Compare] tracks which characters have been changed.<br/><br/>[Send to Input] sends the result back to the Input area for further editing.</p>
+          </div>
+          <div class="grid_tools_2-12 filter_container">
+
+            <div class="grid_filters" style="font-weight: bold">
+              <div class="grid_filters_2-1"><button class="btn1 btn1-outline" style="margin: 2px 2px; float:left; width: 80px" id="replace" onclick="operate('replace')">Replace</button></div>
+              <span class="grid_filters_1-2" style="text-align: center;">Target</span>
+              <span class="grid_filters_2-2" style="text-align: center;"><span style="float:left; color: #215968;padding: 2px 0">|</span>
+                <input type="text" style="width: 80% " id="target" /></span>
+              <span class="grid_filters_1-3" style="text-align: center;">As</span>
+              <span class="grid_filters_2-3" style="text-align: center;">
+                <input type="text" style="width: 100% " id="as" /></span>
+            </div>
+
+            <div class="grid_filters" style="font-weight: bold">
+              <div class="grid_filters_2-1"><button class="btn4 btn4-outline" style="margin: 2px 2px; float:left; width: 80px" id="insert" onclick="operate('insert')">Insert</button></div>
+              <span class="grid_filters_1-2" style="text-align: center;">Character | Space</span>
+              <span class="grid_filters_2-2" style="text-align: center;"><span style="float:left; color: #215968; padding: 2px 0">|</span><input type="text" style="width: 80% " id="character" />
+              </span>
+              <span class="grid_filters_1-3" style="text-align: end; margin-right: 27%">Start</span>
+              <span class="grid_filters_2-3" style="text-align: center; margin-right: 10%"> <input type="number" min="0" step="1" value="5" style="text-align: center; width: 60%; min-width: 40px; border-radius: 25px;float:right" id="start" />
+              </span>
+              <span class="grid_filters_1-4" style="text-align: start; margin-left: 27%">Gap</span>
+              <span class="grid_filters_2-4" style="text-align: center; margin-left: 10%"> <input type="number" min="0" step="1" value="5" style="text-align: center; width:60%; min-width: 40px; border-radius: 25px; float:left " id="gap" />
+              </span>
+            </div>
+
+
+            <div class="grid_filters" style="font-weight: bold">
+              <div class="grid_filters_2-1"><button class="btn3 btn3-outline" style="margin: 2px 2px; float:left; width: 80px" id="insert" onclick="operate('extract')">Extract</button></div>
+              <span class="grid_filters_1-23" style="text-align: center;">Word length</span>
+              <span class="grid_filters_2-23" style="text-align: center;"><span style="float:left; color: #215968; padding: 2px 0">|</span>
+                <div class="grid">
+                  <div class="grid_sub12-1">
+                    <span style="float: right; font-size: 12px; font-weight: bold; color: grey;">0</span>
+                  </div>
+                  <div class="grid_sub12-3">
+                    <span style="float: left; font-size: 12px;font-weight: bold;color: grey;">100 ~</span>
+                  </div>
+                  <div class="multi_slider_container grid_sub12-2">
+                    <div class="multi-range-slider">
+                      <!-- 진짜 슬라이더 -->
+                      <input type="range" id="input-left" min="0" max="101" value="15" />
+                      <input type="range" id="input-right" min="0" max="101" value="90" />
+
+                      <!-- 커스텀 슬라이더 -->
+                      <div class="multi_slider">
+                        <div class="track"></div>
+                        <div class="range"></div>
+                        <div class="thumb left"></div>
+                        <div class="thumb right"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </span>
+              <span class="grid_filters_1-4" style="text-align: center; margin-right: 20%"> </span>
+              <span class="grid_filters_2-4" style="text-align: center; margin-right: 20%; width: 80px">
+                <div class="grid_sub2-3 output" id="val_GCrange"></div>
+              </span>
+            </div>
+
+
+            <div class="grid_filters" style="font-weight: bold; margin-top: 20px; gap: 0 0;">
+              <div class="grid_filters_1-14 btn_container" style="text-align: center;">
+                <button class="btn1 btn1-outline" style="margin: 2px 2px;" id="remF" onclick="operate('remF')">Remove (Figures)</button>
+                <button class="btn1 btn1-outline" style="margin: 2px 2px;" id="remS" onclick="operate('remS')">Remove (Spaces)</button>
+                <button class="btn1 btn1-outline" style="margin: 2px 2px;" id="remL" onclick="operate('remL')">Remove (Lines)</button>
+                <button class="btn1 btn1-outline" style="margin: 2px 2px;" id="StL" onclick="operate('StL')">Space →Line</button>
+                <button class="btn1 btn1-outline" style="margin: 2px 2px;" id="LtS" onclick="operate('LtS')">Line →Space</button>
+                <button class="btn4 btn4-outline" style="margin: 2px 2px;" id="shufW" onclick="operate('shufW')">Shuffle (Words)</button>
+                <button class="btn4 btn4-outline" style="margin: 2px 2px;" id="shufC" onclick="operate('shufC')">Shuffle (Characters)</button>
+              </div>
+              <div class="grid_filters_2-14 btn_container" style="text-align: center;">
+                <button class="btn4 btn4-outline" style="margin: 2px 2px;" id="upper" onclick="operate('upper')">a→A</button>
+                <button class="btn4 btn4-outline" style="margin: 2px 2px;" id="lower" onclick="operate('lower')">A→a</button>
+                <button class="btn3 btn3-outline" style="margin: 2px 2px;" id="oddW" onclick="operate('oddW')">Extract (Odd)</button>
+                <button class="btn3 btn3-outline" style="margin: 2px 2px;" id="evenW" onclick="operate('evenW')">Extract (Even)</button>
+                <button class="btn5 btn5-outline" style="margin: 2px 2px;" id="rev" onclick="operate('rev')">Reverse (ATGC→CGTA)</button>
+                <button class="btn5 btn5-outline" style="margin: 2px 2px;" id="com" onclick="operate('com')">Complement (ATGC→TACG)</button>
+                <button class="btn5 btn5-outline" style="margin: 2px 2px;" id="revcom" onclick="operate('revcom')"> Rev.Com. (ATGC→GCAT)</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="grid_tools">
+          <span class="grid_tools_1-1" style="font-weight: bold; font-size: 16px;">
+            ◈ Input
+          </span>
+          <textarea class="grid_tools_2-12 text_box" type="text" id="inputText" rows="13" name="text" style="resize: none" oninput="operate()"></textarea>
+          <div class="grid_tools_2-12 notification" id="notification1">✔</div>
+          <span class="grid_tools_3-1" style="font-weight: bold">></span>
+          <span class="grid_tools_3-1" style="font-weight: bold;font-size: 12px; margin-left: 15px" id="inputCount">
+            Words: | Char.: | Char. (no space):
+          </span>
+          <div class="grid_tools_3-2">
+            <button class="btn2 btn2-outline" onclick="clearAndRefresh('inputText')">Clear</button>
+          </div>
+        </div>
+
+        <div class="grid_tools">
+          <span class="grid_tools_1-1" style="font-weight: bold; font-size: 16px;">
+            ◈ Output
+            <label class="checkbox_label"><input type="checkbox" id="compare" onclick="operate('pass')"/> Compare</label>
+          </span>
+          <div class="grid_tools_1-2">
+            <button class="btn4 btn4-outline" onclick="sendToInput('inputText', undefined, operate)">↑Send to Input↑</button>
+          </div>
+          <!-- <textarea class="grid_tools_2-12 text_box" id="outputText" rows="13 " name="text" style="resize: none" readonly></textarea> -->
+          <div class="grid_tools_2-12 text_box" id="outputText"></div>
+          <div class="grid_tools_2-12 notification" id="notification2">✔</div>
+          <span class="grid_tools_3-1" style="font-weight: bold">></span>
+          <span class="grid_tools_3-1" style="font-weight: bold;font-size: 12px; margin-left: 15px" id="outputCount">
+            Words: | Char.: | Char. (no space):
+          </span>
+          <div class="grid_tools_3-2">
+            <button class="btn1 btn1-outline" onclick="copyToClipboard('outputText', showNotification, 'notification2')">Copy to clipboard</button>
+          </div>
+        </div>
+      </div>
+      <div id="wrapFooter">
+  <footer>
+
+    <p>
+      <span>kkomdori@gmail.com</span><span>  |  </span><br />
+      <span>Copyright 2023. E.K.Jang. All rights reserved.</span><br /><br />
+    <span style = "margin: 0 20px"> DISCLAIMER: The software author offers no warranty for this freely available software and accepts no responsibility for any potential loss or damage resulting from its use for any purpose.<br /></span>
+    </p>
+  </footer>
+</div>
+    </div>
+</body>
+
+</html>

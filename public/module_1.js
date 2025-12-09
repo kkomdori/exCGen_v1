@@ -1,10 +1,3 @@
-/**--------------------------------------------------------
- * @software  exCGen 
- * @author    E.K.Jang
- * @contact   kkomdori@gmail.com
- * @copyright 2023. E.K.Jang. All rights reserved.
- * ------------------------------------------------------*/
-var copyright = "Copyright 2023. E.K.Jang. All rights reserved.";
 /**---------------------------------------------------------------------------------------
  * @NN_parameters Allawi HT, SantaLucia J Jr. biochemistry (1997) (DOI: 10.1021/bi962590c)
  * This free energy parameters has been evaluated at 37'C, 1M NaCl.
@@ -743,8 +736,4 @@ function Gate_dG_cross(NewPlusStrand, NewMinusStrand, threshold, threshold_selec
     NPvsSelected: NPvsSelected,
     NMvsSelected: NMvsSelected,
   };
-}
-
-function info() {
-  alert(copyright);
 }

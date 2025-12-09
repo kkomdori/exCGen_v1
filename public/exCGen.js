@@ -1,10 +1,3 @@
-/**--------------------------------------------------------
- * @software  exCGen 
- * @author    E.K.Jang
- * @contact   kkomdori@gmail.com
- * @copyright 2023. E.K.Jang. All rights reserved.
- * ------------------------------------------------------*/
-
 var length = 20; //Length of sequences you want to generate
 var num_pairs = 5; //Pairs of sequences
 var preset_seq = "";
